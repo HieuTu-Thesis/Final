@@ -110,12 +110,14 @@
     <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo (CSharp)\Scripts\GA_FREE_OpenOtherScene.cs" />
     <Compile Include="Assets\GUI Animator\GUI Animator FREE\Demo Basic (CSharp)\Scripts\GUIAnimatorFREEDemo.cs" />
     <Compile Include="Assets\Resource\Models\Environments\Building\OutPost\Image Effects (Pro Only)\GlowEffect.cs" />
+    <Compile Include="Assets\Resource\Models\Environments\Vehicles\Vehicles2\Scripts\TakeScreenshot.cs" />
     <Compile Include="Assets\Resource\Particles\Elemental Free\Scripts\GE_ELF_Demo.cs" />
     <Compile Include="Assets\Scripts\Effect1.cs" />
     <Compile Include="Assets\Scripts\Effect2.cs" />
     <Compile Include="Assets\Scripts\Effect3.cs" />
     <Compile Include="Assets\Scripts\Effect4.cs" />
     <Compile Include="Assets\Scripts\LoadScene.cs" />
+    <Compile Include="Assets\Scripts\MovingVehicles.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Vuforia\Scripts\BackgroundPlaneBehaviour.cs" />
     <Compile Include="Assets\Vuforia\Scripts\CloudRecoBehaviour.cs" />
@@ -165,6 +167,7 @@
     <None Include="Assets\Resource\Models\Environments\Building\OutPost\Resources\Assets\Materials\2sided.shader" />
     <None Include="Assets\Resource\Models\Environments\Building\The City\readme The City.txt" />
     <None Include="Assets\Resource\Models\Environments\Land\Fantasy-Environment\Materials\StandardDoubleSided.shader" />
+    <None Include="Assets\Resource\Models\Environments\Vehicles\Lowpoly_Sports_Car_2_in_1\readme.txt" />
     <None Include="Assets\Resource\Particles\Elemental Free\Readme.txt" />
     <None Include="Assets\Resource\Particles\KY_effects\MagicEffectsPackFree\ReadMe.txt" />
     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />

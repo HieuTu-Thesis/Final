@@ -152,6 +152,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Resource\Models\Environments\Vehicles\Area730\UpdateManager\Editor\SimpleJSON.cs" />
+    <Compile Include="Assets\Resource\Models\Environments\Vehicles\Area730\UpdateManager\Editor\UpdatesWindow.cs" />
     <Compile Include="Assets\Vuforia\Editor\Scripts\ComponentFactoryStarter\ComponentFactoryStarter.cs" />
     <Compile Include="Assets\Vuforia\Editor\Scripts\ExtensionImport.cs" />
     <Compile Include="Assets\Vuforia\Editor\Scripts\PostProcessBuildPlayer.cs" />
@@ -170,6 +172,7 @@
     <None Include="Assets\Resource\Models\Environments\Building\OutPost\Resources\Assets\Materials\2sided.shader" />
     <None Include="Assets\Resource\Models\Environments\Building\The City\readme The City.txt" />
     <None Include="Assets\Resource\Models\Environments\Land\Fantasy-Environment\Materials\StandardDoubleSided.shader" />
+    <None Include="Assets\Resource\Models\Environments\Vehicles\Lowpoly_Sports_Car_2_in_1\readme.txt" />
     <None Include="Assets\Resource\Particles\Elemental Free\Readme.txt" />
     <None Include="Assets\Resource\Particles\KY_effects\MagicEffectsPackFree\ReadMe.txt" />
     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
