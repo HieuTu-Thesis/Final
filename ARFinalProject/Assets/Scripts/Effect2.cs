@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Effect2 : MonoBehaviour {
     public GameObject[] _gameObjects;
+
     public float R, G, B;
     public int _endY;
     public float _delayTime, _waitForRotateTime, _waitForShowTime;

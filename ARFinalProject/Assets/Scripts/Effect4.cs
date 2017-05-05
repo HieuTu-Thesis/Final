@@ -34,7 +34,8 @@ public class Effect4 : MonoBehaviour {
         _show[0].transform.FindChild("ETF_Eternal Light").GetComponent<ParticleSystem>().Stop();
 
     }
-        IEnumerator Wait(float seconds)
+
+    IEnumerator Wait(float seconds)
     {
         yield return new WaitForSeconds(seconds);
     }
