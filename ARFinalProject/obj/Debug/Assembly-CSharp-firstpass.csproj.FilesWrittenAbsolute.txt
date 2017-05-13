@@ -23,3 +23,4 @@
 /Users/mac/Final/ARFinalProject/Temp/bin/Debug/Unity.CecilTools.dll
 /Users/mac/Final/ARFinalProject/Temp/bin/Debug/Mono.Cecil.Pdb.dll
 /Users/mac/Final/ARFinalProject/Temp/bin/Debug/Mono.Cecil.Mdb.dll
+/Users/mac/Final/ARFinalProject/Temp/bin/Debug/UnityEngine.PlaymodeTestsRunner.dll
