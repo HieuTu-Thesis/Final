@@ -31,28 +31,27 @@ public class DiceEventHandler : MonoBehaviour {
 		_isMovePlayer = val;
 	}
 
+	public void ThrowDice() {
+		_innerBackground.SetActive (false);
+		_diceBoard.SetActive (true);
+		_isThrowDice = true;
+		for (int i = 0; i < _dicePrefabs.Length; i++) {
+			_dices [i] = Instantiate (_dicePrefabs [i]);
+			_rgBodys [i] = _dices [i].GetComponent<Rigidbody> ();
+			if (_rgBodys == null)
+				Debug.Log ("null body");
+			_rgBodys [i].velocity = new Vector3 (0.1f, 0.1f, 0.1f);
+			_rgBodys [i].transform.Rotate (Random.Range (-myScale, myScale), Random.Range (-myScale, myScale), Random.Range (-myScale, myScale));
+			_rgBodys [i].AddForce (new Vector3 (3.0f, 0.0f, 0.0f) * _forceAmount, _forceMode);
+			_rgBodys [i].AddTorque (GetRandomVector3 (_torqueAmount), _forceMode);
+		}
+	}
+
 	void Update () {
 		if (_isMovePlayer) {
 
 		}
 		else {
-			// Get A key to throw dice
-			if (Input.GetKeyDown (KeyCode.A)) {
-				_innerBackground.SetActive (false);
-				_diceBoard.SetActive (true);
-				_isThrowDice = true;
-				for (int i = 0; i < _dicePrefabs.Length; i++) {
-					_dices [i] = Instantiate (_dicePrefabs [i]);
-					_rgBodys [i] = _dices [i].GetComponent<Rigidbody> ();
-					if (_rgBodys == null)
-						Debug.Log ("null body");
-					_rgBodys [i].velocity = new Vector3 (0.1f, 0.1f, 0.1f);
-					_rgBodys [i].transform.Rotate (Random.Range (-myScale, myScale), Random.Range (-myScale, myScale), Random.Range (-myScale, myScale));
-					_rgBodys [i].AddForce (new Vector3 (3.0f, 0.0f, 0.0f) * _forceAmount, _forceMode);
-					_rgBodys [i].AddTorque (GetRandomVector3 (_torqueAmount), _forceMode);
-				}
-			}
-
 			if (_isThrowDice) {
 				_sumDiceValue = 0;
 				bool isFail = false;
@@ -71,8 +70,8 @@ public class DiceEventHandler : MonoBehaviour {
 
 				// Process to get dice value
 				if (!isFail && isAllDicesStop) {
+					int[] valueDices = { 0, 0 };
 					for (int i = 0; i < _dicePrefabs.Length; i++) {
-						int valueDice = 0;
 						//Debug.Log ("Before normal DiceRotation[" + i.ToString () + "]" + _dices [i].transform.rotation.eulerAngles.ToString ());
 						int xRotation = ((int)_dices [i].transform.rotation.eulerAngles.x) % 360;
 						int zRotation = ((int)_dices [i].transform.rotation.eulerAngles.z) % 360;
@@ -85,31 +84,31 @@ public class DiceEventHandler : MonoBehaviour {
 
 						switch (xRotation) {
 						case 90:
-							valueDice = 6;
+							valueDices[i] = 6;
 							break;	
 						case 0:
 						case 180:
 							if (zRotation == 0)
-								valueDice = 5;
+								valueDices[i] = 5;
 							else if (zRotation == 90)
-								valueDice = 4;
+								valueDices[i] = 4;
 							else if (zRotation == 180)
-								valueDice = 2;
+								valueDices[i] = 2;
 							else if (zRotation == 270)
-								valueDice = 3;
+								valueDices[i] = 3;
 							else
-								valueDice = 0;
+								valueDices[i] = 0;
 							break;	
 						case 270:
-							valueDice = 1;
+							valueDices[i] = 1;
 							break;
 						}
 
-						Debug.Log ("Value Dice[" + i.ToString () + "] = " + valueDice.ToString ());
-						_sumDiceValue += valueDice;
+						Debug.Log ("Value Dice[" + i.ToString () + "] = " + valueDices[i].ToString ());
+						_sumDiceValue += valueDices[i];
 					}
 					_isMovePlayer = true;
-					GetComponent<PlayerController> ().MovePlayer (_sumDiceValue);
+					GameController.HandleFinishThrowDice (_sumDiceValue, valueDices[0] == valueDices[1]);
 					StartCoroutine (DestroyDice (1.5f));
 				}
 			}
