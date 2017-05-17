@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Effect2 : MonoBehaviour {
+public class Effect2 : MonoBehaviour
+{
     public GameObject[] _gameObjects;
 
     public float R, G, B;
@@ -17,7 +18,8 @@ public class Effect2 : MonoBehaviour {
     public bool _initEffect;
     public bool _isStartRotate;
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         _isStartRotate = false;
         _endIdx = 1;
         _startIdx = 0;
@@ -29,9 +31,10 @@ public class Effect2 : MonoBehaviour {
         for (int i = 0; i < _count.Length; i++)
             _count[i] = 0;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         if (_initEffect == true && _startIdx != _endIdx)
         {
             for (int i = _startIdx; i < _endIdx; i++)
@@ -91,16 +94,14 @@ public class Effect2 : MonoBehaviour {
     IEnumerator StartWait(float time)
     {
         yield return StartCoroutine(Wait(time));
-        _gameObjects[_idx].GetComponent<Effect1>()._isChanged = true;
-        _gameObjects[_idx].GetComponent<Effect1>()._type = 0;
-        _gameObjects[_idx].GetComponent<MeshRenderer>().material.color = new Color((float)R/255, (float)G /255, (float)B /255);
+        _gameObjects[_idx].GetComponent<MeshRenderer>().material.color = new Color((float)R / 255, (float)G / 255, (float)B / 255);
         _idx++;
         if (_idx != _gameObjects.Length) StartCoroutine(StartWait(_delayTime));
         else
         {
             for (int i = 0; i < _gameObjects.Length; i++)
             {
-                _gameObjects[i].GetComponent<Effect1>()._isShow = true;
+                _gameObjects[i].GetComponent<CellUtil>().playHighLightColor(20F);
                 _gameObjects[i].transform.FindChild("ETF_Landmine").GetComponent<ParticleSystem>().Play(true);
             }
             gameObject.GetComponent<Effect4>()._isShow = true;

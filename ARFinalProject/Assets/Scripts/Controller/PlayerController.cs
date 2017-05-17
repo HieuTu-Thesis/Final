@@ -177,10 +177,11 @@ public class PlayerController : MonoBehaviour {
 
 		GetComponent<DiceEventHandler>().SetIsMovePlayer(_isMovePlayer);
 
-		// Moving player is finished.
-		// Do anything else....
-		//....
-		GameController.HandleEventAtPosition(GetCurrentPlayerPosition(), _stepNum);
+        // Moving player is finished.
+        // Do anything else....
+        //....
+        //_stepNum = 1; //HARD CODE
+        GameController.GetInstance().HandleEventAtPosition(GetCurrentPlayerPosition(), _stepNum);
 		//_playerTurnIdx = GetNextPlayTurnIdx();
 		_stepNum = 0;
 	} 
@@ -228,8 +229,20 @@ public class PlayerController : MonoBehaviour {
 		return _players[_playerTurnIdx].GetNextPosition ();
 	}
 
-	// Update is called once per frame
-	void Update () {
+    public int GetPlayerTurnIdx()
+    {
+        return _playerTurnIdx;
+    }
+    public int SetMoneyCurrentPlayer(int money)
+    {
+        return _players[_playerTurnIdx]._money = money;
+    }
+    public int AddMoneyPlayer(int playerIdx, int money)
+    {
+        return _players[playerIdx]._money += money;
+    }
+    // Update is called once per frame
+    void Update () {
 		if (_isMovePlayer) {
 			Debug.Log ("Step num: " + _stepNum.ToString ());
 			StartCoroutine (MovePlayerInCurve (MOVE_FORWARD));
