@@ -11,17 +11,17 @@ public class PlayerController : MonoBehaviour {
 
 	public Player[] _players = new Player[4];
 
-
 	public int _placesNum;
 	public static PlayerController playerControllerInstance = null;
 
 
 	private bool _isMovePlayer;
-	private int _playerTurnIdx;
+	public int _playerTurnIdx;
 	private int _stepNum;
 	private Transform _currentPlayerTransform;
-	private float deltaXZ = 0.02f;
-	private float deltaY = 0.085f;
+	private float deltaXZ = 0f;//0.15f;
+	private float deltaY = 0.09f;
+
 	private Vector3[] deltaPlayerPosition = new Vector3[4];
 	private Vector3[] playerFaceDirection = new Vector3[2];
 
@@ -42,12 +42,43 @@ public class PlayerController : MonoBehaviour {
 		deltaPlayerPosition [2] = new Vector3 (deltaXZ, deltaY, -deltaXZ);
 		deltaPlayerPosition [3] = new Vector3 (-deltaXZ, deltaY, -deltaXZ);
 
-		playerFaceDirection[0] = new Vector3(0f, -120f, 0f);
-		playerFaceDirection[1] = new Vector3(0f, -150f, 0f);
-
+		//playerFaceDirection[0] = new Vector3(0f, -120f, 0f);
+		//playerFaceDirection[1] = new Vector3(0f, -150f, 0f);
+		playerFaceDirection[0] = playerFaceDirection[1] = new Vector3(0f, -0f, 0f);
 	}
 
+	private float deltaCorner = 0.6f;
+	private float deltaEdge = 0.6f;
+	public Vector3 GetDeltaPosition(int idxPlayer, int position) {
+		Vector3 res = deltaPlayerPosition [idxPlayer];
+		if (position == 0)
+			res += new Vector3 (deltaCorner, 0f, deltaCorner);
+		else if (position == 9)
+			res += new Vector3 (deltaCorner, 0f, -deltaCorner);
+		else if (position == 18)
+			res += new Vector3 (-deltaCorner, 0f, -deltaCorner);
+		else if (position == 27)
+			res += new Vector3 (-deltaCorner, 0f, deltaCorner);
+		else if (1 <= position && position <= 8)
+			res += new Vector3 (deltaEdge, 0f, 0f);
+		else if (10 <= position && position <= 17)
+			res += new Vector3 (0f, 0f, -deltaEdge);
+		else if (19 <= position && position <= 26)
+			res += new Vector3 (-deltaEdge, 0f, 0f);
+		else if (28 <= position && position <= 35)
+			res += new Vector3 (0f, 0f, deltaEdge);
+		
+		return res;
+	}
 
+	// Update is called once per frame
+	void Update () {
+		if (_isMovePlayer) {
+			Debug.Log ("Step num: " + _stepNum.ToString ());
+			StartCoroutine (MovePlayerInCurve (MOVE_FORWARD));
+			_isMovePlayer = false;
+		}
+	}
 
 	// Init singleton pattern at awake
 	void Awake()
@@ -60,6 +91,10 @@ public class PlayerController : MonoBehaviour {
 			DontDestroyOnLoad(gameObject);
 		}
 	}
+
+	public void SetLocalPosition(int idxPlayer, int position) {
+		_players [idxPlayer]._player.transform.localPosition = GetDeltaPosition (idxPlayer, position) + GameController.GetInstance ()._places [position].transform.localPosition;
+	}
 		
 	public Vector3 GetLocalPositionPlace(int idx) {
 		return GameController.GetTransformPlaceAtIndex (idx).localPosition;
@@ -69,16 +104,33 @@ public class PlayerController : MonoBehaviour {
 		_playerTurnIdx = (_playerTurnIdx + delta) % _playerNum;
 	}
 
-	public void IncreaseMoney(int delta) {
+	public bool IncreaseMoney(int delta) {
 		_players [_playerTurnIdx]._money += delta;
+		if (_players [_playerTurnIdx]._money < 0)
+			return false;
+		return true;
 	}
 
 	public int GetMoneyCurrentPlayer() {
 		return _players [_playerTurnIdx]._money;
 	}
 
-	public void HidePlayer(bool val) {
+	public void SetActivePlayer(bool val) {
+		Ultility.MyDebug ("Hide player", val.ToString ());
 		_players [_playerTurnIdx]._player.SetActive (val);
+	}
+
+	public void SetActivePlayer(int idxPlayer, bool val) {
+		Ultility.MyDebug ("Hide player", val.ToString ());
+		_players [idxPlayer]._player.SetActive (val);
+	}
+
+	public void SetPosition (int val) {
+		_players [_playerTurnIdx]._position = val;
+	}
+
+	public void SetPosition (int idxPlayer, int val) {
+		_players [idxPlayer]._position = val;
 	}
 
 	public int GetCurrentPlayerPrisonLicense() {
@@ -88,6 +140,11 @@ public class PlayerController : MonoBehaviour {
 	public void ChangeCurrentPlayerPrisonLicense(int delta) {
 		_players [_playerTurnIdx]._prisonLicense += delta;
 	}
+
+	public void ChangeMovePlayerValue(bool value) {
+		_isMovePlayer = value;
+		GetComponent<DiceEventHandler>().SetIsMovePlayer(_isMovePlayer);
+	}
 		
 	// Move player by jumping
 	// parameters of formula
@@ -95,7 +152,7 @@ public class PlayerController : MonoBehaviour {
 	private float gravity = 2 * 9.8f; 
 	IEnumerator MovePlayerInCurve(int direction) // direction 1: forward, -1: backward
 	{
-		
+		GameController.GetInstance ().EditCamera (_players[_playerTurnIdx]);
 		// Calcute number player have the same position with current player to set transparent
 		int cnt = 1;
 		for (int i = 0; i < _playerNum; i++) { 
@@ -118,8 +175,15 @@ public class PlayerController : MonoBehaviour {
 		for (int i = 0; i < _stepNum; i++)
 		{
 			int idxPositionInBoard = GetCurrentPlayerPosition();
-			Vector3 targetLocalPosition = GetLocalPositionPlace(GetPositionOfPlayerWithDelta(_playerTurnIdx, direction));
-			Vector3 startLocalPosition = GetLocalPositionPlace (idxPositionInBoard);
+			int nextPosition = GetPositionOfPlayerWithDelta (_playerTurnIdx, direction);
+
+			if (nextPosition == 0 || nextPosition == 9 || nextPosition == 18 || nextPosition == 27) {
+				float rotateAngle = direction * 90f;
+				_players [_playerTurnIdx]._player.transform.Rotate (new Vector3 (0f, rotateAngle, 0f));// = new Vector3 (0f, rotateAngle + _players [_playerTurnIdx]._player.transform.localEulerAngles.y, 0f);
+			}
+
+			Vector3 targetLocalPosition = GetLocalPositionPlace(GetPositionOfPlayerWithDelta(_playerTurnIdx, direction)) + GetDeltaPosition(_playerTurnIdx, nextPosition);
+			Vector3 startLocalPosition = GetLocalPositionPlace (idxPositionInBoard) + GetDeltaPosition(_playerTurnIdx, idxPositionInBoard);
 			float target_Distance = Vector3.Distance(startLocalPosition, targetLocalPosition);
 
 			// Calculate the velocity needed to throw the object to the target at specified angle.
@@ -139,16 +203,16 @@ public class PlayerController : MonoBehaviour {
 				_players[_playerTurnIdx]._player.transform.localPosition += new Vector3(Vx * Time.deltaTime, (Vy - (gravity * elapse_time)) * Time.deltaTime, Vz * Time.deltaTime);
 				elapse_time += Time.deltaTime;
 				if (elapse_time > flightDuration)
-					_players [_playerTurnIdx]._player.transform.localPosition = targetLocalPosition + deltaPlayerPosition[_playerTurnIdx];
+					_players [_playerTurnIdx]._player.transform.localPosition = targetLocalPosition;
 				yield return null;
 			}
-
+			GameController.GetInstance ().AddCellAnimation (GetPositionOfPlayerWithDelta(_playerTurnIdx, direction));
 			yield return new WaitForSeconds(0.1f);
 
 			_players[_playerTurnIdx].IncreasePosition(direction);
 			idxPositionInBoard = GetCurrentPlayerPosition();
 
-
+			/*
 			// Rotate player to look at camera
 			if (idxPositionInBoard == 18)
 				_players [_playerTurnIdx]._player.transform.localEulerAngles = playerFaceDirection [0];
@@ -160,7 +224,7 @@ public class PlayerController : MonoBehaviour {
 					_players [_playerTurnIdx]._player.transform.localEulerAngles = playerFaceDirection [0];
 				else if (idxPositionInBoard == 17)
 					_players [_playerTurnIdx]._player.transform.localEulerAngles = playerFaceDirection [1];
-			}
+			} */
 		}
 
 
@@ -174,13 +238,15 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 
+		if (_stepNum < 4)
+			yield return new WaitForSeconds(1f);
 
+		GameController.GetInstance ().ResetCamera ();
 		GetComponent<DiceEventHandler>().SetIsMovePlayer(_isMovePlayer);
 
         // Moving player is finished.
         // Do anything else....
         //....
-        //_stepNum = 1; //HARD CODE
         GameController.GetInstance().HandleEventAtPosition(GetCurrentPlayerPosition(), _stepNum);
 		//_playerTurnIdx = GetNextPlayTurnIdx();
 		_stepNum = 0;
@@ -194,7 +260,7 @@ public class PlayerController : MonoBehaviour {
 		_players [_playerTurnIdx]._sameDiceCount = 0;
 		_players [_playerTurnIdx]._inPrison = 3;
 		_players [_playerTurnIdx]._position = 9; // 9 la position cua nha tu`
-		_players [_playerTurnIdx]._player.transform.localPosition = GetLocalPositionPlace (9) + deltaPlayerPosition [_playerTurnIdx];
+		_players [_playerTurnIdx]._player.transform.localPosition = GetLocalPositionPlace (9) + GetDeltaPosition(_playerTurnIdx, 9);
 	}
 
 	// Set transparent for Player
@@ -205,7 +271,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	// Dummy code. Haven't handle order of players yet.
-	int GetNextPlayTurnIdx ()
+	public int GetNextPlayTurnIdx ()
 	{
 		return (_playerTurnIdx + 1) % _playerNum;
 	}
@@ -241,16 +307,7 @@ public class PlayerController : MonoBehaviour {
     {
         return _players[playerIdx]._money += money;
     }
-    // Update is called once per frame
-    void Update () {
-		if (_isMovePlayer) {
-			Debug.Log ("Step num: " + _stepNum.ToString ());
-			StartCoroutine (MovePlayerInCurve (MOVE_FORWARD));
-			//StartCoroutine(MovePlayerInCurve(_playerTurnIdx, 1));
-			_isMovePlayer = false;
-		}
-	}
-
+		
 	// Singleton pattern for PlayerController
 	private PlayerController(){}
 	public static PlayerController GetInstance() {			
@@ -261,7 +318,7 @@ public class PlayerController : MonoBehaviour {
 	public void InitPlayers() {
 		for (int i = 0; i < _playerNum; i++) {
 			GameObject playerObj = Instantiate(_playerPrefab[i], _gameObjectInBoard.transform);
-			playerObj.transform.localPosition = GetLocalPositionPlace(0) + deltaPlayerPosition[i];
+			playerObj.transform.localPosition = GetLocalPositionPlace(0) + deltaPlayerPosition[i] + GetDeltaPosition(i, 0);
 			Player player = new Player (playerObj, _defaultPosition, _defaultMoney);
 			_players[i] = player;
 		}

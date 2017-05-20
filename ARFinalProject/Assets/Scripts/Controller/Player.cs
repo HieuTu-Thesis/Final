@@ -7,6 +7,7 @@ public class Player {
 	public GameObject _player;
 	public int _position;
 	public int _money;
+	public int _turnExtra;
 	 
 	// Còn phải ở trong tù bao lâu. -1: ko ở trong tù, 0: phải dùng tiền để ra tù, 3: mới bị nhốt vào tù. Qua một lượt ném xúc xắc mà chưa ra dc thì trừ đi dần 
 	public int _inPrison;
@@ -24,6 +25,7 @@ public class Player {
 		_inPrison = -1;
 		_sameDiceCount = 0;
 		_prisonLicense = 0;
+		_turnExtra = 0;
 	}
 
 	public void IncreasePosition(int delta) {

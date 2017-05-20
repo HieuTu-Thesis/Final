@@ -15,6 +15,9 @@ public class Ultility : MonoBehaviour {
 	}
 
 	public static void MyDebug(string info, object obj) {
-		//Debug.Log (info + " " + obj.ToString ());
+		string more = " obj null";
+		if (obj != null)
+			more = obj.ToString ();
+		Debug.Log (info + " " + more);
 	}
 }

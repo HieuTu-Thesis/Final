@@ -10,6 +10,7 @@ public class Effect1 : MonoBehaviour {
     public int _type;
     public bool _isShow, _isChanged;
     public Material _material;
+	public bool EFFECT = false;
     // Use this for initialization
     void Start() {
         Calculate();
@@ -19,6 +20,9 @@ public class Effect1 : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+		if (!EFFECT)
+			return;
+		
         if (_isPlay == false && _isShow == true) Calculate();
 
         if (_type == 0 && _isChanged == true)

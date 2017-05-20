@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour {
 	public GameObject[] _places;
 
 	public GameObject _helicopterPrefab;
+	public GameObject _planePrefab;
 	public GameObject _gameObjectInBoard;
 	public GameObject _canvas;
 
@@ -26,9 +27,10 @@ public class GameController : MonoBehaviour {
 	public const int _valAuction = 6;
 	public const int _valParkingFee = 7;
 	public const int _valTax = 8;
+	public const int _valAirport = 9;
+	public const int _valCoachStation = 10;
 
 	private int[] _eventAtPosition;
-	private bool _isGoPrison = false;
 
 	public bool _isWaitCardChoice;
 	public int _cardChoice = -1;
@@ -49,8 +51,19 @@ public class GameController : MonoBehaviour {
 	public GameObject _normalCamera;
 	public GameObject[] _cardChoiceTarget;
 	public GameObject _fullBoard;
-	private bool AR_MODE_ON = true;
-	private bool DEBUG_AR = false;
+	private bool AR_MODE_ON = F;
+	private bool DEBUG_AR = F;
+
+	public static bool F = false;
+	public static bool T = true;
+	public static bool DEBUG_EVENT = F;
+	public static int DEBUG_EVENT_VAL = _valAirport;
+
+	private GameObject _helicopter;
+	private GameObject _plane;
+	private GameObject _arrowTarget;
+
+	public GameObject _arrowTargetPrefab;
 
 	// Instance of Singleton pattern
 	private static GameController gameControllerInstance = null;
@@ -61,14 +74,9 @@ public class GameController : MonoBehaviour {
 		return gameControllerInstance;
 	}
 
-	public void MyDebug(string info, object x) {
-		Debug.Log (info + " " + x.ToString ());
-	}
-
 
 	void Awake()
 	{
-		
 		if (gameControllerInstance != null && gameControllerInstance != this)
 		{
 			Destroy(this.gameObject);
@@ -78,6 +86,8 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	private GameObject _mainCamera;
+	private GameObject _moveCamera;
 	// Use this for initialization
 	void Start () {
 		gameControllerInstance.InitEventTypeAtPosition();
@@ -87,27 +97,31 @@ public class GameController : MonoBehaviour {
 
 		if (!AR_MODE_ON) {
 			_ARCamera.SetActive (false);
+			_mainCamera = _normalCamera;
 			for (int i = 0; i < _cardChoiceTarget.Length; i++)
 				_cardChoiceTarget [i].SetActive (false);
-		} else
+		} else {
+			_mainCamera = _ARCamera.transform.Find("Camera").gameObject;
 			_normalCamera.SetActive (false);
+		}
 	}
 
 
-	bool isImageA = false;
 	// Update is called once per frame
 	void Update () {
-		//if (_shouldThrowDice) {
-		//	_shouldThrowDice = false;
-		//	GetComponent<DiceEventHandler> ().ThrowDice ();
-		//}
+		if (_shouldThrowDice) {
+			if (PlayerController.GetInstance ().GetCurrentPlayer ()._turnExtra == -1) {
+				PlayerController.GetInstance ().GetCurrentPlayer ()._turnExtra = 0;
+				PlayerController.GetInstance ().SetPlayerTurnIdx (1);
+			}
 
-        if (Input.GetKeyDown(KeyCode.A)) GetComponent<DiceEventHandler>().ThrowDice();
+			_shouldThrowDice = false;
+			GetComponent<DiceEventHandler> ().ThrowDice ();
+		}
 
         if (_isWaitCardChoice) {
 			if (_cardChoice != -1) {
-				MyDebug ("Card choice:", _cardChoice);
-				if (_typeCurrentEvent == _valOpportunity) {
+				if (_typeCurrentEvent == _valOpportunity || _typeCurrentEvent == _valUnlucky) {
 					RotateUIImage ();
 				}
 			}
@@ -133,18 +147,58 @@ public class GameController : MonoBehaviour {
 
 	}
 
-	public static void HandleFinishMovePlayer() {
-
+	public void OutPrisonFunc() {
+		StartCoroutine (OutPrison(2.0f));
 	}
 
-	IEnumerator OutPrison() {
-		OutPrisonFunc ();
-		yield return null; 
+	IEnumerator OutPrison(float time) {
+		yield return new WaitForSeconds(time); 
+		_shouldThrowDice = T;
 		PlayerController.GetInstance ().SetPlayerTurnIdx (1);
+		PlayerController.GetInstance ().ChangeMovePlayerValue (false);
+	}
+
+	public GameObject _moveCameraPrefab;
+	public void EditCamera(Player obj) {
+		_mainCamera.transform.GetComponent<Camera>().rect = new Rect (0f, 0f, 0f, 0f);
+		if (!AR_MODE_ON)
+			_mainCamera.transform.GetComponent<AudioListener> ().enabled = false;
+		else
+			_ARCamera.transform.GetComponent<AudioListener> ().enabled = false;
+		_moveCamera = Instantiate (_moveCameraPrefab, obj._player.transform);
+		_moveCamera.transform.localPosition = new Vector3 (0f, 1.6f, - 2.75f);
+		_moveCamera.transform.localEulerAngles = new Vector3 (12f, 0f, 0f);
+		//_moveCamera.transform.GetComponent<CameraFollowPlayer> ().target = obj;
+	}
+
+	public void SetEulerAnglesCamera() {
+		_moveCamera.transform.eulerAngles = new Vector3 (12f, 0f, 0f);
+	}
+
+	public void ResetCamera() {
+		if (!AR_MODE_ON)
+			_mainCamera.transform.GetComponent<AudioListener> ().enabled = T;
+		else
+			_ARCamera.transform.GetComponent<AudioListener> ().enabled = T;
+		_mainCamera.transform.GetComponent<Camera>().rect = new Rect (0f, 0f, 1f, 1f);
+		Destroy (_moveCamera);
+	}
+
+	public void InitArrowTarget(int position) {
+		_arrowTarget = Instantiate (_arrowTargetPrefab, _gameObjectInBoard.transform);
+		Debug.Log("localPosition " + _places [position].transform.localPosition.ToString());
+		_arrowTarget.GetComponent<ArrowAnimation>().begin = _places [position].transform.localPosition + new Vector3(0f, 0.2f, 0f);
+	}
+
+	public void DestroyArrowTarget() {
+		Destroy (_arrowTarget);
+	}
+
+	public void AddCellAnimation(int position) {
+		_places [position].AddComponent<CellAnimation> ();
 	}
 
 	private static bool _isSameDice;
-
 	public static void HandleFinishThrowDice(int sumDiceValue, bool isSame) {
 		_isSameDice = isSame;
 		Player curPlayer = PlayerController.GetInstance ().GetCurrentPlayer ();
@@ -152,11 +206,15 @@ public class GameController : MonoBehaviour {
 			if (curPlayer._inPrison != -1) {
 				Ultility.MyDebug ("Xu ly ra tu", null);
 				//-----------
+				curPlayer._inPrison = -1;
+				gameControllerInstance.OutPrisonFunc ();
 				return;
 			}
 
 			if (curPlayer._sameDiceCount == 2) {
 				Ultility.MyDebug ("Bi nhot vao tu vi 3 lan xuc xac giong nhau", null);
+				gameControllerInstance._typeCurrentEvent = _valGoPrison;
+				curPlayer._sameDiceCount = 0;
 				gameControllerInstance.GoPrison (PlayerController.GetInstance ().GetCurrentPlayer ()._position);
 				return;
 			} else {
@@ -168,10 +226,11 @@ public class GameController : MonoBehaviour {
 				return;
 			} else if (curPlayer._inPrison > 1){
 				curPlayer._inPrison -= 1;
+				gameControllerInstance._shouldThrowDice = T;
 				return;
 			}
 		}
-
+		gameControllerInstance.InitArrowTarget (curPlayer.GetPositionWithDelta (sumDiceValue));
 		PlayerController.GetInstance ().MovePlayer (sumDiceValue);
 	}
 
@@ -180,12 +239,16 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void HandleEventAtPosition(int position, int stepMoved) {
+		gameControllerInstance.DestroyArrowTarget ();
 		if (position - stepMoved < 0)
 			gameControllerInstance.PassStart ();
 		
 		gameControllerInstance._typeCurrentEvent = gameControllerInstance._eventAtPosition [position];
 		if (gameControllerInstance.AR_MODE_ON && gameControllerInstance.DEBUG_AR)
 			gameControllerInstance._typeCurrentEvent = _valOpportunity;
+		if (DEBUG_EVENT)
+			gameControllerInstance._typeCurrentEvent = DEBUG_EVENT_VAL;
+		
 		switch (gameControllerInstance._typeCurrentEvent) {
 		case _valBuildHouse:
 			{
@@ -284,9 +347,18 @@ public class GameController : MonoBehaviour {
 			}
 		case _valGoPrison:
 			gameControllerInstance.GoPrison (position);
-			break;
+			return;
 		case _valOpportunity:
-			//gameControllerInstance.Opportunity ();
+			gameControllerInstance.LuckyAndUnlucky ();
+			return;
+		case _valUnlucky:
+			gameControllerInstance.LuckyAndUnlucky ();
+			return;
+		case _valAirport:
+			gameControllerInstance.RandomFly ();
+			return;
+		case _valAuction:
+			gameControllerInstance.DoAuction (PlayerController.GetInstance ()._playerTurnIdx, position);
 			return;
 		}
 		int delta = 1;
@@ -294,46 +366,108 @@ public class GameController : MonoBehaviour {
 			delta = 0;
 		}
 		PlayerController.GetInstance ().SetPlayerTurnIdx (delta);
-		//gameControllerInstance._shouldThrowDice = true;
+		gameControllerInstance._shouldThrowDice = true;
+	}
+
+	public void FlyEnimHousePosition () {
+		int cur = PlayerController.GetInstance ()._playerTurnIdx;
+		int next = PlayerController.GetInstance ().GetNextPlayTurnIdx ();
+		for (int i = 1; i < 36; i++) {
+			if (_places [i].GetComponent<CellUtil> ().getOwnerIdx () != cur) {
+				_plane = Instantiate (_planePrefab, _gameObjectInBoard.transform);
+				_plane.transform.localPosition = _places [27].transform.localPosition + new Vector3 (0f, 0.2f, 0f);
+				PlayerController.GetInstance ().SetActivePlayer (false);
+				StartCoroutine(FlyPlayer(_plane, cur, PlayerController.GetInstance ().GetCurrentPlayer ()._position, i));
+				return;
+			}
+		}
+		for (int j = 0; j < 4; j++) {
+			if (j != cur && j != next) {
+				for (int i = 1; i < 36; i++) {
+					if (_places [i].GetComponent<CellUtil> ().getOwnerIdx () != cur) {
+						_plane = Instantiate (_planePrefab, _gameObjectInBoard.transform);
+						_plane.transform.localPosition = _places [27].transform.localPosition + new Vector3 (0f, 0.2f, 0f);
+						PlayerController.GetInstance ().SetActivePlayer (false);
+						StartCoroutine (FlyPlayer (_plane, cur, PlayerController.GetInstance ().GetCurrentPlayer ()._position, i));
+						return;
+					}
+				}
+			}
+		}
+
+		int delta = 1;
+		if (_isSameDice) {
+			delta = 0;
+		}
+		PlayerController.GetInstance ().SetPlayerTurnIdx (delta);
+		gameControllerInstance._shouldThrowDice = true;
+	}
+
+	public void DoAuction(int playeId, int position) {
+		int fee = Auction.GetInstance ().CheckFee (playeId, position);
+		if (fee > 0) {
+			bool res = PlayerController.GetInstance ().IncreaseMoney (-fee);
+			if (!res) {
+				// Pha san
+			} 
+		} else {
+			int cost = Auction.GetInstance ().GetCostToAuction (playeId, position);
+			if (cost > 0 && cost >= PlayerController.GetInstance().GetMoneyCurrentPlayer()) {
+				// Hoi ban co muon dau gia khong?
+			}
+		}
+
+		int delta = 1;
+		if (_isSameDice)
+			delta = 0;
+		PlayerController.GetInstance ().SetPlayerTurnIdx (delta);
+		_shouldThrowDice = true;
+	}
+
+	public static int GetRandomIntExcecpt(int i) {
+		while (true) {
+			int res = Random.Range (0, 36);
+			if (res != i)
+				return res;
+		}
+
+		return 0;
+	}
+
+	public void RandomFly() {
+		int randomPos = GetRandomIntExcecpt (27);
+		_plane = Instantiate (_planePrefab, _gameObjectInBoard.transform);
+		_plane.transform.localPosition = _places [27].transform.localPosition + new Vector3 (0f, 0.2f, 0f);
+		PlayerController.GetInstance ().SetActivePlayer (false);
+		StartCoroutine(FlyPlayer(_plane, PlayerController.GetInstance ()._playerTurnIdx, 27, randomPos));
 	}
 
 	public void PassStart(){
 		PlayerController.GetInstance ().IncreaseMoney (_bonusPassStart);
 	}
 
-	public void OutPrisonFunc() {
-		Ultility.MyDebug ("Out of prison function", null);
-	}
-
     public void processSaleHouse()
     {
 
     }
-
-	private GameObject _helicopter;
+		
 	public void GoPrison(int curPosition) {
 		if (PlayerController.GetInstance ().GetCurrentPlayerPrisonLicense () > 0) {
-			MyDebug ("Dung the ra tu", null);
 			PlayerController.GetInstance ().ChangeCurrentPlayerPrisonLicense (-1);
+			_shouldThrowDice = true;
 			return;
 		}
 
 		_helicopter = Instantiate (_helicopterPrefab, _gameObjectInBoard.transform);
-		_isGoPrison = true;
 		_helicopter.transform.localPosition = _places [curPosition].transform.localPosition + new Vector3 (0f, 0.2f, 0f);
-		PlayerController.GetInstance ().HidePlayer (true);
-		StartCoroutine(MoveHelicopterInCurve());
-
+		PlayerController.GetInstance ().SetActivePlayer (false);
+		PlayerController.GetInstance ().GetCurrentPlayer ()._inPrison = 3;
+		_shouldThrowDice = false;
+		StartCoroutine(FlyPlayer(_helicopter, PlayerController.GetInstance ()._playerTurnIdx, curPosition, 9));
 	}
 
-	public void Unlucky() {
-
-	}
-
-
-
-	public void Opportunity() {
-		_canvas.transform.Find ("Opportunity").gameObject.SetActive (true);
+	public void LuckyAndUnlucky() {
+		_canvas.transform.Find ("LuckyAndUnlucky").gameObject.SetActive (true);
 		_isWaitCardChoice = true;
 
 		if (AR_MODE_ON) {
@@ -342,18 +476,23 @@ public class GameController : MonoBehaviour {
 				_cardChoiceTarget [i].SetActive (true);
 		} else
 			StartCoroutine (Wait(2f));
-
 	}
 
 	IEnumerator Wait(float time) {
 		yield return new WaitForSeconds(time);
-		_cardChoice = 0;
+		_cardChoice = Random.Range (0, 3);;
 	}
 
 	private string[] _UIImageNames = { "ImageA", "ImageB", "ImageC"};
 	private void RotateUIImage() {
-		Transform imageA = _canvas.transform.Find ("Opportunity").Find(_UIImageNames[_cardChoice]); 
-		StartCoroutine(RotateUIImage(imageA, _luckGifs[_cardChoice], 5.0f));
+		string name = "LuckyAndUnlucky";
+		Sprite[] cards = _luckGifs;
+		if (_typeCurrentEvent == _valUnlucky) {
+			cards = _unluckyResults;
+		}
+		Transform image = _canvas.transform.Find (name).Find(_UIImageNames[_cardChoice]); 
+		int randomResult = Random.Range (0, 3);
+		StartCoroutine(RotateUIImage(image,randomResult, cards[randomResult], 2.0f));
 		_isWaitCardChoice = false;
 
 		if (AR_MODE_ON) {
@@ -365,7 +504,45 @@ public class GameController : MonoBehaviour {
 		_cardChoice = -1;
 	}
 
-	IEnumerator RotateUIImage(Transform img, Sprite replace, float duration)
+	public void GetUnluckyAndUnluckyResult(int result) {
+		int randomMoney = Random.Range (1, 3) * 1000;
+		int delta = 1;
+		if (_typeCurrentEvent == _valOpportunity) {
+			switch (result) {
+			case 0:
+				PlayerController.GetInstance ().GetCurrentPlayer ()._prisonLicense += 1;
+				break;
+			case 1:
+				// Them luot
+				delta = 0;
+				break;
+			case 2:
+				PlayerController.GetInstance ().GetCurrentPlayer ()._money += randomMoney;
+				break;
+			}
+		} else if (_typeCurrentEvent == _valUnlucky) {
+			switch (result) {
+			case 0:
+				// Bay den nha doi thu
+				FlyEnimHousePosition();
+				return;
+			case 1:
+				// Mat Luot
+				PlayerController.GetInstance().GetCurrentPlayer()._turnExtra -= 1;
+				break;
+			case 2:
+				PlayerController.GetInstance ().GetCurrentPlayer ()._money -= randomMoney;
+				break;
+			}
+		}
+		if (_isSameDice)
+			delta = 0;
+		
+		PlayerController.GetInstance ().SetPlayerTurnIdx (delta);
+		_shouldThrowDice = true;
+	}
+
+	IEnumerator RotateUIImage(Transform img, int result, Sprite replace, float duration)
 	{
 		float elapse_time = 0;
 		float speed = 100 + duration/Time.deltaTime * 20;
@@ -379,11 +556,14 @@ public class GameController : MonoBehaviour {
 		img.rotation = Quaternion.identity;
 
 		yield return new WaitForSeconds(0.2f);
+		Sprite originSpr = img.GetComponent<Image> ().sprite;
 		img.GetComponent<Image> ().sprite = replace;
 		yield return new WaitForSeconds(4f);
-		_shouldThrowDice = true;
-		img.GetComponent<Image> ().sprite = _luckyCard;
-		_canvas.transform.Find ("Opportunity").gameObject.SetActive (false);
+
+
+		img.GetComponent<Image> ().sprite = originSpr;
+		_canvas.transform.Find ("LuckyAndUnlucky").gameObject.SetActive (false);
+		GetUnluckyAndUnluckyResult (result);
 	} 
 
 	public static Transform GetTransformPlaceAtIndex(int idx) {
@@ -409,52 +589,82 @@ public class GameController : MonoBehaviour {
 			return _valGoPrison;
 		if (name.CompareTo ("Prison") == 0)
 			return _valPrison;
-		if (name.CompareTo ("CoachStation") == 0 || name.CompareTo ("Parking") == 0 || name.CompareTo ("Airport") == 0 || name.CompareTo ("TDDK") == 0
-		    || name.CompareTo ("TDDL") == 0|| name.CompareTo ("TDVT") == 0)
+		if (name.CompareTo ("Parking") == 0 || name.CompareTo ("TDDK") == 0
+			|| name.CompareTo ("TDDL") == 0|| name.CompareTo ("TDVT") == 0)
 			return _valAuction;
 		if (name.CompareTo ("Tax") == 0)
 			return _valTax;
 		if (name.CompareTo ("Parking") == 0)
 			return _valParkingFee;
-		
+		if (name.CompareTo ("Airport") == 0)
+			return _valAirport;
+		if (name.CompareTo ("CoachStation") == 0)
+			return _valCoachStation;
+
 		return _valBuildHouse;
 	}
-
-
-
-	IEnumerator MoveHelicopterInCurve()
+		
+	IEnumerator FlyPlayer(GameObject model, int playerIdx, int startPos, int endPos)
 	{
-		float firingAngle = 60.0f;
-		float gravity = 9.8f/4; 
-		float target_Distance = Vector3.Distance(_places [9].transform.localPosition, _helicopter.transform.localPosition);
+		Vector3 target = _places [endPos].transform.localPosition;
+		if (startPos != endPos) {
+			float firingAngle = 60.0f;
+			float gravity = 9.8f / 4; 
 
-		// Calculate the velocity needed to throw the object to the target at specified angle.
-		float velocity = Mathf.Sqrt(target_Distance / (Mathf.Sin(2 * firingAngle * Mathf.Deg2Rad) / gravity));
-		float Vx = 0, Vz = 0;
-		float Vy = velocity * Mathf.Sin(firingAngle * Mathf.Deg2Rad);
+			Vector3 begin = _places [startPos].transform.localPosition;
+			float target_Distance = Vector3.Distance (target, begin);
 
-		// Calculate flight time.
-		float flightDuration = 2 * Vy / gravity;
-		Vx = (_places [9].transform.localPosition.x - _helicopter.transform.localPosition.x) / flightDuration;
-		Vz = (_places [9].transform.localPosition.z - _helicopter.transform.localPosition.z) / flightDuration;
-		float elapse_time = 0;
+			// Calculate the velocity needed to throw the object to the target at specified angle.
+			float velocity = Mathf.Sqrt (target_Distance / (Mathf.Sin (2 * firingAngle * Mathf.Deg2Rad) / gravity));
+			float rotateDegree = -90;
+			if (target.z != begin.z)
+				rotateDegree = Mathf.Rad2Deg * Mathf.Atan ((target.x - begin.x) / (target.z - begin.z));
+			model.transform.eulerAngles = model.transform.eulerAngles + new Vector3 (0, rotateDegree, 0);
+			float Vx = 0, Vz = 0;
+			float Vy = velocity * Mathf.Sin (firingAngle * Mathf.Deg2Rad);
 
-		// fly curvely
-		while (elapse_time <= flightDuration)
-		{
-			_helicopter.transform.localPosition += new Vector3(Vx * Time.deltaTime, (Vy - (gravity * elapse_time)) * Time.deltaTime, Vz * Time.deltaTime);
-			elapse_time += Time.deltaTime;
-			if (elapse_time > flightDuration)
-				_helicopter.transform.localPosition = _places [9].transform.localPosition;
-			yield return null;
+			// Calculate flight time.
+			float flightDuration = 2 * Vy / gravity;
+			Vx = (target.x - begin.x) / flightDuration;
+			Vz = (target.z - begin.z) / flightDuration;
+			float elapse_time = 0;
+
+			// fly curvely
+			while (elapse_time <= flightDuration) {
+				model.transform.localPosition += new Vector3 (Vx * Time.deltaTime, (Vy - (gravity * elapse_time)) * Time.deltaTime, Vz * Time.deltaTime);
+				elapse_time += Time.deltaTime;
+				if (elapse_time > flightDuration)
+					model.transform.localPosition = target;
+				yield return null;
+			}
+
+			yield return new WaitForSeconds (0.1f);
+		} else
+			yield return new WaitForSeconds (1.6f);
+
+		Destroy (model, 1.0f);
+		PlayerController.GetInstance ().SetLocalPosition (playerIdx, endPos);
+		PlayerController.GetInstance ().SetPosition (playerIdx, endPos);
+		float faceAngle = 0f;
+		if (endPos >= 9 && endPos < 18)
+			faceAngle = 90f;
+		else if (endPos >= 18 && endPos < 27)
+			faceAngle = 180f;
+		else if (endPos >= 27 && endPos < 36)
+			faceAngle = 270f;
+		PlayerController.GetInstance ().GetCurrentPlayer ()._player.transform.localEulerAngles = new Vector3 (0f, faceAngle, 0f);
+		PlayerController.GetInstance ().SetActivePlayer (playerIdx, true);
+
+		yield return new WaitForSeconds(1f);
+
+		PlayerController.GetInstance ().ChangeMovePlayerValue (false);
+		if (_typeCurrentEvent == _valGoPrison) {
+			PlayerController.GetInstance ().SetPlayerTurnIdx (1);
+			_shouldThrowDice = true;
+		}
+		else {
+			HandleEventAtPosition (endPos, 0);
 		}
 
-		yield return new WaitForSeconds(0.1f);
-		Destroy (_helicopter, 1.0f);
-		PlayerController.GetInstance ().HidePlayer (false);
-		_isGoPrison = false;
-		PlayerController.GetInstance ().SetPlayerTurnIdx (1);
-		yield return new WaitForSeconds(0.2f);
-		_shouldThrowDice = true;
 	} 
 }

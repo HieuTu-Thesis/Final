@@ -7,6 +7,7 @@ public class Effect4 : MonoBehaviour {
     public float _delayTime;
     public GameObject _effect;
     public GameObject[] _show;
+	public bool EFFECT = false;
 	// Use this for initialization
 	void Start () {
         _isShow = false;
@@ -14,6 +15,8 @@ public class Effect4 : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (!EFFECT)
+			return;
 		if (_isShow == true)
         {
             StartCoroutine(StartWait(_delayTime));

@@ -17,6 +17,8 @@ public class Effect2 : MonoBehaviour
     public bool _rotateEffect;
     public bool _initEffect;
     public bool _isStartRotate;
+
+	public bool EFFECT = false;
     // Use this for initialization
     void Start()
     {
@@ -35,6 +37,8 @@ public class Effect2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+		if (!EFFECT)
+			return;
         if (_initEffect == true && _startIdx != _endIdx)
         {
             for (int i = _startIdx; i < _endIdx; i++)

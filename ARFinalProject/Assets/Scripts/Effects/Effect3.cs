@@ -7,7 +7,7 @@ public class Effect3 : MonoBehaviour {
     public float _degrees, _changeDegrees;
     private int _startIdx, _endIdx;
     private int[] _count;
-
+	public bool EFFECT = false;
 	// Use this for initialization
 	void Start () {
         _startIdx = 0;
@@ -19,6 +19,8 @@ public class Effect3 : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (!EFFECT)
+			return;
         if (_startIdx != _endIdx)
         {
             for (int i = _startIdx; i < _endIdx; i++)
