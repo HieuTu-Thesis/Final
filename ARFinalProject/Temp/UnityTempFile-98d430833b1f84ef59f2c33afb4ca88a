@@ -1,0 +1,212 @@
+-debug
+-target:library
+-nowarn:0169
+-langversion:4
+-out:'Temp/Assembly-CSharp.dll'
+-r:'/Applications/Unity/Unity.app/Contents/Managed/UnityEngine.dll'
+-r:'Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll'
+-r:'Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll'
+-r:'/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll'
+-r:'/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll'
+-r:'/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/PlaymodeTestsRunner/UnityEngine.PlaymodeTestsRunner.dll'
+-r:'/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll'
+-r:'/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll'
+-r:'/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll'
+-r:'Assets/GUI Animator/Common/Plugins/GETween.dll'
+-r:'Assets/GUI Animator/GUI Animator FREE/Plugins/GUIAnimatorFREE.dll'
+-r:'Assets/Vuforia/Scripts/Internal/Vuforia.UnityExtensions.dll'
+-r:'/Applications/Unity/Unity.app/Contents/Managed/UnityEditor.dll'
+-r:'/Applications/Unity/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll'
+-r:'/Applications/Unity/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Common.dll'
+-define:UNITY_5_3_OR_NEWER
+-define:UNITY_5_4_OR_NEWER
+-define:UNITY_5_5_OR_NEWER
+-define:UNITY_5_5_1
+-define:UNITY_5_5
+-define:UNITY_5
+-define:ENABLE_AUDIO
+-define:ENABLE_CACHING
+-define:ENABLE_CLOTH
+-define:ENABLE_DUCK_TYPING
+-define:ENABLE_GENERICS
+-define:ENABLE_MICROPHONE
+-define:ENABLE_MULTIPLE_DISPLAYS
+-define:ENABLE_PHYSICS
+-define:ENABLE_SPRITERENDERER_FLIPPING
+-define:ENABLE_SPRITES
+-define:ENABLE_TERRAIN
+-define:ENABLE_RAKNET
+-define:ENABLE_UNET
+-define:ENABLE_LZMA
+-define:ENABLE_UNITYEVENTS
+-define:ENABLE_WEBCAM
+-define:ENABLE_WWW
+-define:ENABLE_CLOUD_SERVICES_COLLAB
+-define:ENABLE_CLOUD_SERVICES_ADS
+-define:ENABLE_CLOUD_HUB
+-define:ENABLE_CLOUD_PROJECT_ID
+-define:ENABLE_CLOUD_SERVICES_UNET
+-define:ENABLE_CLOUD_SERVICES_BUILD
+-define:ENABLE_CLOUD_LICENSE
+-define:ENABLE_EDITOR_METRICS
+-define:ENABLE_EDITOR_METRICS_CACHING
+-define:INCLUDE_DYNAMIC_GI
+-define:INCLUDE_GI
+-define:PLATFORM_SUPPORTS_MONO
+-define:RENDER_SOFTWARE_CURSOR
+-define:INCLUDE_PUBNUB
+-define:ENABLE_PLAYMODE_TESTS_RUNNER
+-define:ENABLE_SCRIPTING_NEW_CSHARP_COMPILER
+-define:UNITY_STANDALONE_WIN
+-define:UNITY_STANDALONE
+-define:ENABLE_SUBSTANCE
+-define:ENABLE_RUNTIME_GI
+-define:ENABLE_MOVIES
+-define:ENABLE_NETWORK
+-define:ENABLE_CRUNCH_TEXTURE_COMPRESSION
+-define:ENABLE_UNITYWEBREQUEST
+-define:ENABLE_CLOUD_SERVICES
+-define:ENABLE_CLOUD_SERVICES_ANALYTICS
+-define:ENABLE_CLOUD_SERVICES_PURCHASING
+-define:ENABLE_CLOUD_SERVICES_CRASH_REPORTING
+-define:ENABLE_EVENT_QUEUE
+-define:ENABLE_CLUSTERINPUT
+-define:ENABLE_VIDEO
+-define:ENABLE_VR
+-define:ENABLE_WEBSOCKET_HOST
+-define:ENABLE_MONO
+-define:ENABLE_PROFILER
+-define:DEBUG
+-define:TRACE
+-define:UNITY_ASSERTIONS
+-define:UNITY_EDITOR
+-define:UNITY_EDITOR_64
+-define:UNITY_EDITOR_OSX
+-define:UNITY_TEAM_LICENSE
+-define:CROSS_PLATFORM_INPUT
+'Assets/GE Common Assets/GE Orbit Camera/Scripts/GE_OrbitCamera.cs'
+'Assets/GE Common Assets/GE Orbit Camera/Scripts/GE_OrbitCameraUI.cs'
+'Assets/GE Common Assets/GE Toggle Full Screen/Scripts/GE_ToggleFullScreenUI.cs'
+'Assets/GE Common Assets/Scripts/GE_UIResponder.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo (CSharp)/Scripts/GA_FREE_Demo00.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo (CSharp)/Scripts/GA_FREE_Demo01.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo (CSharp)/Scripts/GA_FREE_Demo02.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo (CSharp)/Scripts/GA_FREE_Demo03.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo (CSharp)/Scripts/GA_FREE_Demo04.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo (CSharp)/Scripts/GA_FREE_Demo05.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo (CSharp)/Scripts/GA_FREE_Demo06.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo (CSharp)/Scripts/GA_FREE_Demo07.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo (CSharp)/Scripts/GA_FREE_Demo08.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo (CSharp)/Scripts/GA_FREE_DemoPlaySound.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo (CSharp)/Scripts/GA_FREE_OpenOtherScene.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo Basic (CSharp)/Scripts/GUIAnimatorFREEDemo.cs'
+'Assets/Resource/Models/Environments/Building/OutPost/Image Effects (Pro Only)/GlowEffect.cs'
+'Assets/Resource/Models/Environments/Others/Dice/Plugins/Dice.cs'
+'Assets/Resource/Models/Environments/Others/Dice/Plugins/Die.cs'
+'Assets/Resource/Models/Environments/Others/Dice/Scripts/Dice/Die_d10.cs'
+'Assets/Resource/Models/Environments/Others/Dice/Scripts/Dice/Die_d6.cs'
+'Assets/Resource/Models/Environments/Others/Dice/scenes/Demo/AppDemo.cs'
+'Assets/Resource/Models/Environments/Vehicles/Vehicles2/Scripts/TakeScreenshot.cs'
+'Assets/Resource/Particles/Elemental Free/Scripts/GE_ELF_Demo.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/Bat.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/BlockSetProfile.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/ButtonHelper.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/CameraFollower.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/ColorTweener.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/Flare.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/HingeAutoRotator.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/InputManager.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/LandingLeg.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/LightRandomizer.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/MapGenerator.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/MeshCombiner.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/MouseFollower.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/Noise.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/RocketEngine.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/RotationTweener.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/SimpleExamplesController.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/SimpleRNG.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/SortingOrderSetter.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/Spacecraft.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/SpiderLeg.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/UICustomSlider.cs'
+'Assets/Resource/Particles/Light2D/Examples/Scripts/Wisp.cs'
+'Assets/Resource/Particles/Light2D/Scripts/CustomSprite.cs'
+'Assets/Resource/Particles/Light2D/Scripts/LightObstacleGenerator.cs'
+'Assets/Resource/Particles/Light2D/Scripts/LightObstacleMesh.cs'
+'Assets/Resource/Particles/Light2D/Scripts/LightObstacleSprite.cs'
+'Assets/Resource/Particles/Light2D/Scripts/LightSprite.cs'
+'Assets/Resource/Particles/Light2D/Scripts/LightingSystem.cs'
+'Assets/Resource/Particles/Light2D/Scripts/LightingSystemPrefabConfig.cs'
+'Assets/Resource/Particles/Light2D/Scripts/ObstacleCameraPostPorcessor.cs'
+'Assets/Resource/Particles/Light2D/Scripts/Point2.cs'
+'Assets/Resource/Particles/Light2D/Scripts/Util.cs'
+'Assets/Scripts/AR/CellTrackableEventHandler.cs'
+'Assets/Scripts/AR/ChooseHouseTrackableEventHandler.cs'
+'Assets/Scripts/AR/ConditionTrackableEventHandler.cs'
+'Assets/Scripts/AR/MyTrackableEventHandler.cs'
+'Assets/Scripts/Controller/ArrowAnimation.cs'
+'Assets/Scripts/Controller/Auction.cs'
+'Assets/Scripts/Controller/CameraFollowPlayer.cs'
+'Assets/Scripts/Controller/CellAnimation.cs'
+'Assets/Scripts/Controller/CellUtil.cs'
+'Assets/Scripts/Controller/DiceEventHandler.cs'
+'Assets/Scripts/Controller/GameController.cs'
+'Assets/Scripts/Controller/Player.cs'
+'Assets/Scripts/Controller/PlayerController.cs'
+'Assets/Scripts/Controller/Ultility.cs'
+'Assets/Scripts/Effects/DialogEffect.cs'
+'Assets/Scripts/Effects/Effect1.cs'
+'Assets/Scripts/Effects/Effect2.cs'
+'Assets/Scripts/Effects/Effect3.cs'
+'Assets/Scripts/Effects/Effect4.cs'
+'Assets/Scripts/Effects/LoadScene.cs'
+'Assets/Scripts/Effects/MovingVehicles.cs'
+'Assets/Scripts/Games/JackPot/JackPot.cs'
+'Assets/Scripts/Games/JackPot/PotRotate.cs'
+'Assets/Scripts/Games/Roulette/Light.cs'
+'Assets/Scripts/Games/Roulette/Roulette.cs'
+'Assets/Scripts/Games/Roulette/WheelRotate.cs'
+'Assets/Scripts/Player/CharacterController.cs'
+'Assets/Singleton.cs'
+'Assets/Vuforia/Scripts/BackgroundPlaneBehaviour.cs'
+'Assets/Vuforia/Scripts/CloudRecoBehaviour.cs'
+'Assets/Vuforia/Scripts/CylinderTargetBehaviour.cs'
+'Assets/Vuforia/Scripts/DefaultInitializationErrorHandler.cs'
+'Assets/Vuforia/Scripts/DefaultSmartTerrainEventHandler.cs'
+'Assets/Vuforia/Scripts/DefaultTrackableEventHandler.cs'
+'Assets/Vuforia/Scripts/GLErrorHandler.cs'
+'Assets/Vuforia/Scripts/HideExcessAreaBehaviour.cs'
+'Assets/Vuforia/Scripts/ImageTargetBehaviour.cs'
+'Assets/Vuforia/Scripts/Internal/AndroidUnityPlayer.cs'
+'Assets/Vuforia/Scripts/Internal/ComponentFactoryStarterBehaviour.cs'
+'Assets/Vuforia/Scripts/Internal/IOSUnityPlayer.cs'
+'Assets/Vuforia/Scripts/Internal/VuforiaBehaviourComponentFactory.cs'
+'Assets/Vuforia/Scripts/Internal/WSAUnityPlayer.cs'
+'Assets/Vuforia/Scripts/MaskOutBehaviour.cs'
+'Assets/Vuforia/Scripts/MultiTargetBehaviour.cs'
+'Assets/Vuforia/Scripts/ObjectTargetBehaviour.cs'
+'Assets/Vuforia/Scripts/PropBehaviour.cs'
+'Assets/Vuforia/Scripts/ReconstructionBehaviour.cs'
+'Assets/Vuforia/Scripts/ReconstructionFromTargetBehaviour.cs'
+'Assets/Vuforia/Scripts/SurfaceBehaviour.cs'
+'Assets/Vuforia/Scripts/TextRecoBehaviour.cs'
+'Assets/Vuforia/Scripts/TurnOffBehaviour.cs'
+'Assets/Vuforia/Scripts/TurnOffWordBehaviour.cs'
+'Assets/Vuforia/Scripts/UserDefinedTargetBuildingBehaviour.cs'
+'Assets/Vuforia/Scripts/Utilities/VRIntegrationHelper.cs'
+'Assets/Vuforia/Scripts/VideoBackgroundBehaviour.cs'
+'Assets/Vuforia/Scripts/VirtualButtonBehaviour.cs'
+'Assets/Vuforia/Scripts/VuMarkBehaviour.cs'
+'Assets/Vuforia/Scripts/VuforiaBehaviour.cs'
+'Assets/Vuforia/Scripts/VuforiaConfiguration.cs'
+'Assets/Vuforia/Scripts/VuforiaRuntimeInitialization.cs'
+'Assets/Vuforia/Scripts/WireframeBehaviour.cs'
+'Assets/Vuforia/Scripts/WireframeTrackableEventHandler.cs'
+'Assets/Vuforia/Scripts/WordBehaviour.cs'
+-r:'/Applications/Unity/Unity.app/Contents/MonoBleedingEdge/lib/mono/unity/System.Runtime.Serialization.dll'
+-r:'/Applications/Unity/Unity.app/Contents/MonoBleedingEdge/lib/mono/unity/System.Xml.Linq.dll'
+-r:'/Applications/Unity/Unity.app/Contents/MonoBleedingEdge/lib/mono/unity/UnityScript.dll'
+-r:'/Applications/Unity/Unity.app/Contents/MonoBleedingEdge/lib/mono/unity/UnityScript.Lang.dll'
+-r:'/Applications/Unity/Unity.app/Contents/MonoBleedingEdge/lib/mono/unity/Boo.Lang.dll'
+-sdk:unity
