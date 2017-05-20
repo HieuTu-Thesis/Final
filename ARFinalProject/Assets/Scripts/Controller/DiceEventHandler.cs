@@ -19,7 +19,7 @@ public class DiceEventHandler : MonoBehaviour {
 	private int _sumDiceValue = 0; // Total value of dices
 
 	private bool _isMovePlayer; // state: if player is moving or not
-	private int DEBUG_CELL = -1;
+	private int DEBUG_CELL = 7;
 	private bool DICESAME = false;
 
 	void Start() {
@@ -63,7 +63,7 @@ public class DiceEventHandler : MonoBehaviour {
 						isFail = true;
 						break;
 					}
-				
+
 					if (_rgBodys [i].velocity.magnitude >= 0.00001f) {
 						isAllDicesStop = false;
 						break;

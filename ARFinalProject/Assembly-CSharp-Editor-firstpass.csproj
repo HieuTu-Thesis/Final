@@ -158,6 +158,7 @@
      <None Include="Assets\Standard Assets\Environment\Water\Water\Shaders\FXWaterPro.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\DLAA.shader" />
      <None Include="Assets\Resource\Particles\Light2D\Resources\Shaders\TransparentDualColorNormalMapped.shader" />
+     <None Include="Assets\StreamingAssets\QCAR\ThesisDatabase.xml" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseAndGrainDX11.shader" />
      <None Include="Assets\Resource\Particles\Light2D\Examples\Resources\Shaders\Noise.cginc" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BrightPassFilter2.shader" />

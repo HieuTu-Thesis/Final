@@ -15,20 +15,20 @@ public class GameController : MonoBehaviour {
 	public GameObject _planePrefab;
 	public GameObject _gameObjectInBoard;
 	public GameObject _canvas;
-    public GameObject _targets;
-    //-----------------------------------------
-    public bool _isWaitCardChoiceSaleHouse; //Card choice cho bán nhà
-    public bool _isWaitCardChoiceCityProcess; //Card choice yes no cho các vùng đất thuộc type city
-    public int _totalSaleMoney = 0; //Số tiền đã bán được của người chơi hiện tại
-    private int _totalPayMoney = 0;
-    private int _currentPosition; //Dùng cho AR
-    private int _currentTurnIdx;//Dùng cho AR
-    private int _type;//Dùng cho AR
-    private int _currentPlayerMoney = 0;//Dùng cho AR
-    private List<GameObject> _ownerHouses;
-    //-------------------------------------------
-    // type of event
-    public const int _valBuildHouse = 0;
+	public GameObject _targets;
+	//-----------------------------------------
+	public bool _isWaitCardChoiceSaleHouse; //Card choice cho bán nhà
+	public bool _isWaitCardChoiceCityProcess; //Card choice yes no cho các vùng đất thuộc type city
+	public int _totalSaleMoney = 0; //Số tiền đã bán được của người chơi hiện tại
+	private int _totalPayMoney = 0;
+	private int _currentPosition; //Dùng cho AR
+	private int _currentTurnIdx;//Dùng cho AR
+	private int _type;//Dùng cho AR
+	private int _currentPlayerMoney = 0;//Dùng cho AR
+	private List<GameObject> _ownerHouses;
+	//-------------------------------------------
+	// type of event
+	public const int _valBuildHouse = 0;
 	public const int _valOpportunity = 1;
 	public const int _valGame = 2;
 	public const int _valUnlucky = 3;
@@ -57,11 +57,12 @@ public class GameController : MonoBehaviour {
 	public Sprite _unluckyCard;
 	public Sprite[] _unluckyResults;
 
+	public bool _changeCamera = T;
 	public GameObject _ARCamera;
 	public GameObject _normalCamera;
 	public GameObject[] _cardChoiceTarget;
 	public GameObject _fullBoard;
-	private bool AR_MODE_ON = true;
+	private bool AR_MODE_ON = F;
 	private bool DEBUG_AR = F;
 
 	public static bool F = false;
@@ -129,64 +130,84 @@ public class GameController : MonoBehaviour {
 			GetComponent<DiceEventHandler> ().ThrowDice ();
 		}
 
-        if (_isWaitCardChoice) {
+		if (_isWaitCardChoice) {
+			MyHideDialog ();
 			if (_cardChoice != -1) {
 				if (_typeCurrentEvent == _valOpportunity || _typeCurrentEvent == _valUnlucky) {
 					RotateUIImage ();
 				}
 
+				if (_typeCurrentEvent == _valAuction) {
+					bool accept = true;
+					if (_cardChoice == 4)
+						accept = false;
+					Auction.GetInstance ().ReceiveAuctionResult (PlayerController.GetInstance ().GetCurrentPlayer ()._position, PlayerController.GetInstance ().GetPlayerTurnIdx (), accept);
+				}
 			}
 		}
-        if (_isWaitCardChoiceSaleHouse)
-        {
-            if ((_totalSaleMoney + _currentPlayerMoney) >= _totalPayMoney && _type == 1)
-            {
-                //Stop sale house processing
-                _isWaitCardChoiceSaleHouse = false;
-                //Next turn
-                int delta = 1;
-                if (_isSameDice)
-                {
-                    delta = 0;
-                }
-                PlayerController.GetInstance().SetPlayerTurnIdx(delta);
-                gameControllerInstance._shouldThrowDice = true;
- 
-                //Stop hight light color
-                for (int i = 0; i < _ownerHouses.Count; i++)
-                    _ownerHouses[i].GetComponent<CellUtil>().stopHighLightColor();
-                //Set tiền dư cho người chơi
-                PlayerController.GetInstance().SetMoneyPlayer(_currentTurnIdx, _totalSaleMoney + _currentPlayerMoney - _totalPayMoney);
-                Debug.Log("Tien du: " + (_totalSaleMoney + _currentPlayerMoney - _totalPayMoney).ToString());
-                //Nâng cấp nhà tại vị trí hiện tại
-                _places[_currentPosition].GetComponent<CellUtil>().upgradeHouse(_currentTurnIdx);
-                _totalSaleMoney = _totalPayMoney = 0;
-            }
-            else if (_totalSaleMoney >= _totalPayMoney && _type == 2)
-            {
-                //Stop sale house processing
-                _isWaitCardChoiceSaleHouse = false;
-                //Next turn
-                int delta = 1;
-                if (_isSameDice)
-                {
-                    delta = 0;
-                }
-                PlayerController.GetInstance().SetPlayerTurnIdx(delta);
-                gameControllerInstance._shouldThrowDice = true;
-                //Stop hight light color
-                for (int i = 0; i < _ownerHouses.Count; i++)
-                    _ownerHouses[i].GetComponent<CellUtil>().stopHighLightColor();
-                //Set tiền dư cho người chơi
-                PlayerController.GetInstance().SetMoneyPlayer(_currentTurnIdx, _totalSaleMoney + _currentPlayerMoney - _totalPayMoney);
-                //Cộng tiền cho đội bạn
-                PlayerController.GetInstance().AddMoneyPlayer(_places[_currentPosition].GetComponent<CellUtil>().getOwnerIdx(), _totalPayMoney);
-                Debug.Log("Tien du: " + (_totalSaleMoney + _currentPlayerMoney - _totalPayMoney).ToString());
-                _totalSaleMoney = _totalPayMoney = 0;
-            }
-        }
-       
-    }
+		if (_isWaitCardChoiceSaleHouse)
+		{
+			if ((_totalSaleMoney + _currentPlayerMoney) >= _totalPayMoney && _type == 1)
+			{
+				//Stop sale house processing
+				_isWaitCardChoiceSaleHouse = false;
+				//Next turn
+				int delta = 1;
+				if (_isSameDice)
+				{
+					delta = 0;
+				}
+				PlayerController.GetInstance().SetPlayerTurnIdx(delta);
+				gameControllerInstance._shouldThrowDice = true;
+
+				//Stop hight light color
+				for (int i = 0; i < _ownerHouses.Count; i++)
+					_ownerHouses[i].GetComponent<CellUtil>().stopHighLightColor();
+				//Set tiền dư cho người chơi
+				PlayerController.GetInstance().SetMoneyPlayer(_currentTurnIdx, _totalSaleMoney + _currentPlayerMoney - _totalPayMoney);
+				Debug.Log("Tien du: " + (_totalSaleMoney + _currentPlayerMoney - _totalPayMoney).ToString());
+				//Nâng cấp nhà tại vị trí hiện tại
+				_places[_currentPosition].GetComponent<CellUtil>().upgradeHouse(_currentTurnIdx);
+				_totalSaleMoney = _totalPayMoney = 0;
+			}
+			else if (_totalSaleMoney >= _totalPayMoney && _type == 2)
+			{
+				//Stop sale house processing
+				_isWaitCardChoiceSaleHouse = false;
+				//Next turn
+				int delta = 1;
+				if (_isSameDice)
+				{
+					delta = 0;
+				}
+				PlayerController.GetInstance().SetPlayerTurnIdx(delta);
+				gameControllerInstance._shouldThrowDice = true;
+				//Stop hight light color
+				for (int i = 0; i < _ownerHouses.Count; i++)
+					_ownerHouses[i].GetComponent<CellUtil>().stopHighLightColor();
+				//Set tiền dư cho người chơi
+				PlayerController.GetInstance().SetMoneyPlayer(_currentTurnIdx, _totalSaleMoney + _currentPlayerMoney - _totalPayMoney);
+				//Cộng tiền cho đội bạn
+				PlayerController.GetInstance().AddMoneyPlayer(_places[_currentPosition].GetComponent<CellUtil>().getOwnerIdx(), _totalPayMoney);
+				Debug.Log("Tien du: " + (_totalSaleMoney + _currentPlayerMoney - _totalPayMoney).ToString());
+				_totalSaleMoney = _totalPayMoney = 0;
+			}
+		}
+
+
+	}
+
+	public void HandleAfterFinishAuction() {
+		_shouldThrowDice = true;
+		SetPlayerTurnIdx ();
+	}
+
+	public void SetPlayerTurnIdx() {
+		int delta = 1;
+		if (_isSameDice)
+			delta = 0;
+		PlayerController.GetInstance ().SetPlayerTurnIdx (delta);
+	}
 
 	IEnumerator WaitForFirstThrowDice(float time) {
 		yield return new WaitForSeconds(time);
@@ -220,6 +241,8 @@ public class GameController : MonoBehaviour {
 
 	public GameObject _moveCameraPrefab;
 	public void EditCamera(Player obj) {
+		if (!_changeCamera)
+			return;
 		_mainCamera.transform.GetComponent<Camera>().rect = new Rect (0f, 0f, 0f, 0f);
 		if (!AR_MODE_ON)
 			_mainCamera.transform.GetComponent<AudioListener> ().enabled = false;
@@ -236,6 +259,8 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void ResetCamera() {
+		if (!_changeCamera)
+			return;
 		if (!AR_MODE_ON)
 			_mainCamera.transform.GetComponent<AudioListener> ().enabled = T;
 		else
@@ -257,6 +282,14 @@ public class GameController : MonoBehaviour {
 	public void AddCellAnimation(int position) {
 		_places [position].AddComponent<CellAnimation> ();
 	}
+	IEnumerator HideDialogAfter(float time) {
+		yield return new WaitForSeconds (time);
+		MyHideDialog ();
+	}
+
+	public void StartCoroutineHideDialog() {
+		StartCoroutine (HideDialogAfter (2f));
+	}
 
 	public static bool _isSameDice;
 	public static void HandleFinishThrowDice(int sumDiceValue, bool isSame) {
@@ -264,10 +297,10 @@ public class GameController : MonoBehaviour {
 		Player curPlayer = PlayerController.GetInstance ().GetCurrentPlayer ();
 		if (_isSameDice) {
 			if (curPlayer._inPrison != -1) {
-				Ultility.MyDebug ("Xu ly ra tu", null);
-				//-----------
+				gameControllerInstance.showDialog ("Bạn được ra tù");
 				curPlayer._inPrison = -1;
 				gameControllerInstance.OutPrisonFunc ();
+				gameControllerInstance.StartCoroutineHideDialog ();
 				return;
 			}
 
@@ -276,6 +309,7 @@ public class GameController : MonoBehaviour {
 				gameControllerInstance._typeCurrentEvent = _valGoPrison;
 				curPlayer._sameDiceCount = 0;
 				gameControllerInstance.GoPrison (PlayerController.GetInstance ().GetCurrentPlayer ()._position);
+
 				return;
 			} else {
 				curPlayer._sameDiceCount += 1;
@@ -295,42 +329,57 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void GetMoneyToOutPrison() {
-
+		if (PlayerController.GetInstance ().GetMoneyCurrentPlayer () > 5000) {
+			showDialog ("Bạn tiêu 5000 để ra tù");
+			PlayerController.GetInstance ().IncreaseMoney (-5000);
+			PlayerController.GetInstance ().SetPlayerTurnIdx (1); 
+			_shouldThrowDice = true;
+			gameControllerInstance.StartCoroutineHideDialog ();
+		}
+		else {
+			// GOi ban nha`
+			Debug.Log("Goi ban nha de ra tu vi het tien");
+			showDialog ("Bán nhà để ra tù");
+			saleHouseProcess1 ();
+		}
 	}
 
 	public void HandleEventAtPosition(int position, int stepMoved) {
 		gameControllerInstance.DestroyArrowTarget ();
 		if (position - stepMoved < 0)
 			gameControllerInstance.PassStart ();
-		
+
 		gameControllerInstance._typeCurrentEvent = gameControllerInstance._eventAtPosition [position];
 		if (gameControllerInstance.AR_MODE_ON && gameControllerInstance.DEBUG_AR)
 			gameControllerInstance._typeCurrentEvent = _valOpportunity;
 		if (DEBUG_EVENT)
 			gameControllerInstance._typeCurrentEvent = DEBUG_EVENT_VAL;
-        _currentTurnIdx = PlayerController.GetInstance().GetPlayerTurnIdx();
-        _currentPosition = position;
-        switch (gameControllerInstance._typeCurrentEvent) {
+		_currentTurnIdx = PlayerController.GetInstance().GetPlayerTurnIdx();
+		_currentPosition = position;
+		switch (gameControllerInstance._typeCurrentEvent) {
 		case _valBuildHouse:
 			{
-                LandProcess();
-                return;
+				LandProcess();
+				return;
 			}
 		case _valGoPrison:
 			gameControllerInstance.GoPrison (position);
 			return;
 		case _valOpportunity:
-                //gameControllerInstance.LuckyAndUnlucky ();
-                break;
+			gameControllerInstance.LuckyAndUnlucky ();
+			return;
 		case _valUnlucky:
-			//gameControllerInstance.LuckyAndUnlucky ();
-			break;
+			gameControllerInstance.LuckyAndUnlucky ();
+			return;
 		case _valAirport:
 			gameControllerInstance.RandomFly ();
 			return;
 		case _valAuction:
-                //gameControllerInstance.DoAuction (PlayerController.GetInstance ()._playerTurnIdx, position);
-                break;
+			gameControllerInstance.DoAuction (PlayerController.GetInstance ()._playerTurnIdx, position);
+			return;
+		case _valPrison:
+			gameControllerInstance.VisitPrison ();
+			return;
 		}
 		int delta = 1;
 		if (_isSameDice) {
@@ -340,208 +389,232 @@ public class GameController : MonoBehaviour {
 		gameControllerInstance._shouldThrowDice = true;
 	}
 
-    public void LandProcess()
-    {
-        // Sự kiện người chơi có thể mua nhà, hoặc đóng phí khi vào nhà xử lý tại đây
-        // Muốn lấy thông tin  của người chơi hiện tại thì dùng  PlayerController.GetInstance ()  -> Get money, position,...
-        // Sự kiện người chơi có thể mua nhà, hoặc đóng phí khi vào nhà xử lý tại đây
-        // Muốn lấy thông tin  của người chơi hiện tại thì dùng  PlayerController.GetInstance ()  -> Get money, position,...
-        //Nếu ô đất này là của người chơi sở hữu hoặc chưa có ai sở hữu
-        int currentHouseLevel = _places[_currentPosition].GetComponent<CellUtil>().getCurrentHouseLevel();
-        _currentPlayerMoney = PlayerController.GetInstance().GetMoneyPlayer(_currentTurnIdx);
-        if (_places[_currentPosition].GetComponent<CellUtil>().getOwnerIdx() == _currentTurnIdx || _places[_currentPosition].GetComponent<CellUtil>().getOwnerIdx() == -1)
-        {
-            int payMoney = _places[_currentPosition].GetComponent<CellUtil>().getPrice(currentHouseLevel);
-            if (_currentPlayerMoney >= payMoney)
-            {
-                //Show dialog hỏi ý kiến người chơi, nếu chọn yes
-                //Nếu đủ tiền
-                //---------------------------
-                //Build house process
-                showDialog("Bạn có muốn mua " + _places[_currentPosition].GetComponent<CellUtil>().getPlaceName() + " với giá " + _places[_currentPosition].GetComponent<CellUtil>().getCurrentPrice() + "$ không?");
-                ConditionTrackableEventHandler._type = 0;
-                _isWaitCardChoiceCityProcess = true;
-               
-                //-----------------------------------
-            }
-            else
-            {
-                //Nếu không đủ tiền, có thể bán nhà
-                //Bắt buộc bán nhà hoặc tuyên bố phá sản
-                int total = 0;
-                _ownerHouses = new List<GameObject>();
-                for (int i = 0; i < _places.Length; i++)
-                {
-                    if ((_places[i].GetComponent<CellUtil>().getOwnerIdx() == _currentTurnIdx) && i != _currentPosition)
-                    {
-                        _ownerHouses.Add(_places[i]);
-                        total += _places[i].GetComponent<CellUtil>().getPrice(_places[i].GetComponent<CellUtil>().getCurrentHouseLevel());
-                    }
-                }
-                if ((total + _currentPlayerMoney) >= payMoney)
-                {
+	public void VisitPrison() {
+		for (int i = 0; i < 4; i++) {
+			if (i != PlayerController.GetInstance ()._playerTurnIdx && PlayerController.GetInstance()._players[i]._inPrison != -1) {
+				if (PlayerController.GetInstance ().GetMoneyCurrentPlayer () > 5000) {
+					showDialog ("Bạn tiêu 5000 vì thăm tù");
+					PlayerController.GetInstance ().IncreaseMoney (-5000);
+					SetPlayerTurnIdx ();
+					_shouldThrowDice = true;
+					gameControllerInstance.StartCoroutineHideDialog ();
+				}
+				else {
+					// GOi ban nha`
+					Debug.Log("Goi ban nha de ra tu vi het tien");
+					showDialog ("Bán nhà vì thiếu tiền thăm tù");
+					saleHouseProcess1 ();
+				}
+				break;
+			}
+		}
+		SetPlayerTurnIdx ();
+		_shouldThrowDice = T;
+	}
 
-                    //Show dialog hỏi ý kiến người chơi, nếu chọn Yes
-                    //-------------------------------------------------
-                    //Sale house process 1
-                    if (currentHouseLevel < 4)
-                    {
-                        if (currentHouseLevel == 0)
-                            showDialog("Bạn không đủ tiền mặt, bạn cần " + (payMoney - _currentPlayerMoney).ToString() + "$ để mua " + _places[_currentPosition].GetComponent<CellUtil>().getPlaceName() + ". Bạn có muốn mua không?");
-                        else showDialog("Bạn không đủ tiền mặt, bạn cần " + (payMoney - _currentPlayerMoney).ToString() + "$ để nâng cấp nhà tại " + _places[_currentPosition].GetComponent<CellUtil>().getPlaceName() + ". Bạn có muốn nâng cấp nhà không?");
-                        ConditionTrackableEventHandler._type = 1;
-                        _isWaitCardChoiceCityProcess = true;
-                      
-                    }
-                    //-------------------------------------------------
-                }
-            }
-        }
-        else
-        {
-            //Nếu đi vào nhà của người khác
-            //Show dialog
+	public void LandProcess()
+	{
+		// Sự kiện người chơi có thể mua nhà, hoặc đóng phí khi vào nhà xử lý tại đây
+		// Muốn lấy thông tin  của người chơi hiện tại thì dùng  PlayerController.GetInstance ()  -> Get money, position,...
+		// Sự kiện người chơi có thể mua nhà, hoặc đóng phí khi vào nhà xử lý tại đây
+		// Muốn lấy thông tin  của người chơi hiện tại thì dùng  PlayerController.GetInstance ()  -> Get money, position,...
+		//Nếu ô đất này là của người chơi sở hữu hoặc chưa có ai sở hữu
+		int currentHouseLevel = _places[_currentPosition].GetComponent<CellUtil>().getCurrentHouseLevel();
+		_currentPlayerMoney = PlayerController.GetInstance().GetMoneyPlayer(_currentTurnIdx);
+		if (_places[_currentPosition].GetComponent<CellUtil>().getOwnerIdx() == _currentTurnIdx || _places[_currentPosition].GetComponent<CellUtil>().getOwnerIdx() == -1)
+		{
+			int payMoney = _places[_currentPosition].GetComponent<CellUtil>().getPrice(currentHouseLevel);
+			if (_currentPlayerMoney >= payMoney)
+			{
+				//Show dialog hỏi ý kiến người chơi, nếu chọn yes
+				//Nếu đủ tiền
+				//---------------------------
+				//Build house process
+				showDialog("Bạn có muốn mua " + _places[_currentPosition].GetComponent<CellUtil>().getPlaceName() + " với giá " + _places[_currentPosition].GetComponent<CellUtil>().getCurrentPrice() + "$ không?");
+				ConditionTrackableEventHandler._type = 0;
+				_isWaitCardChoiceCityProcess = true;
 
-            int payMoney = _places[_currentPosition].GetComponent<CellUtil>().getVisitPrice(currentHouseLevel);
-            if (_currentPlayerMoney >= payMoney)
-            {
-                PlayerController.GetInstance().AddMoneyPlayer(_currentTurnIdx, -payMoney); //Trừ tiền
-                PlayerController.GetInstance().AddMoneyPlayer(_places[_currentPosition].GetComponent<CellUtil>().getOwnerIdx(), payMoney); //Cộng tiền cho đội bạn
-            }
-            else
-            {
-                //Bắt buộc bán nhà hoặc tuyên bố phá sản
-                int total = 0;
-                _ownerHouses = new List<GameObject>();
-                for (int i = 0; i < _places.Length; i++)
-                {
-                    if (_places[i].GetComponent<CellUtil>().getOwnerIdx() == _currentTurnIdx)
-                    {
-                        _ownerHouses.Add(_places[i]);
-                        total += _places[i].GetComponent<CellUtil>().getPrice(_places[i].GetComponent<CellUtil>().getCurrentHouseLevel());
-                    }
-                }
-                if ((total + _currentPlayerMoney) >= payMoney)
-                {
-                    //-----------------------------------------------
-                    //Sale house process 2
-                    //showDialog();
-                    showDialog("Bạn không đủ tiền mặt, bạn cần " + (payMoney - _currentPlayerMoney).ToString() + "$ để trả tiền ghé thăm tại " + _places[_currentPosition].GetComponent<CellUtil>().getPlaceName() + ". Bạn có muốn bán nhà để chi trả không?");
-                    ConditionTrackableEventHandler._type = 2;
-                    _isWaitCardChoiceCityProcess = true;
-                    
-                    //-------------------------------------
-                }
-                else
-                {
-                    //Phá sản
-                    //showDialog("Phá sản");
-                    //Next turn
-                    int delta = 1;
-                    if (_isSameDice)
-                    {
-                        delta = 0;
-                    }
-                    PlayerController.GetInstance().SetPlayerTurnIdx(delta);
-                    gameControllerInstance._shouldThrowDice = true;
-                }
-            }
-        }
-    }
-    public void hideDialog()
-    {
-        //_canvas.transform.Find("Dialog").gameObject.SetActive(false);
-        _shouldThrowDice = true;
-        _canvas.transform.Find("Dialog").gameObject.GetComponent<DialogEffect>().hideDialog();
-    }
-    public void showDialog(string text)
-    {
-        _shouldThrowDice = false;
-        //_canvas.transform.Find("Dialog").gameObject.SetActive(true);
-        _canvas.transform.Find("Dialog").gameObject.transform.Find("Text").GetComponent<Text>().text = text;
-        _canvas.transform.Find("Dialog").gameObject.GetComponent<DialogEffect>().showDialog();
-    }
+				//-----------------------------------
+			}
+			else
+			{
+				//Nếu không đủ tiền, có thể bán nhà
+				//Bắt buộc bán nhà hoặc tuyên bố phá sản
+				int total = 0;
+				_ownerHouses = new List<GameObject>();
+				for (int i = 0; i < _places.Length; i++)
+				{
+					if ((_places[i].GetComponent<CellUtil>().getOwnerIdx() == _currentTurnIdx) && i != _currentPosition)
+					{
+						_ownerHouses.Add(_places[i]);
+						total += _places[i].GetComponent<CellUtil>().getPrice(_places[i].GetComponent<CellUtil>().getCurrentHouseLevel());
+					}
+				}
+				if ((total + _currentPlayerMoney) >= payMoney)
+				{
 
-    public void buildHouseProcess()
-    {
-        PlayerController.GetInstance().AddMoneyPlayer(_currentTurnIdx, -_places[_currentPosition].GetComponent<CellUtil>().getPrice(_places[_currentPosition].GetComponent<CellUtil>().getCurrentHouseLevel()));
-        //Build house
-        if (_places[_currentPosition].GetComponent<CellUtil>().upgradeHouse(_currentTurnIdx) == 1)
-        {
-            //Nếu còn có thể xây thêm nhà
-            //Hiện thông báo
-            Debug.Log("Upgrade");
-        }
-        int delta = 1;
-        if (_isSameDice)
-        {
-            delta = 0;
-        }
-        PlayerController.GetInstance().SetPlayerTurnIdx(delta);
-        gameControllerInstance._shouldThrowDice = true;
-    }
+					//Show dialog hỏi ý kiến người chơi, nếu chọn Yes
+					//-------------------------------------------------
+					//Sale house process 1
+					if (currentHouseLevel < 4)
+					{
+						if (currentHouseLevel == 0)
+							showDialog("Bạn không đủ tiền mặt, bạn cần " + (payMoney - _currentPlayerMoney).ToString() + "$ để mua " + _places[_currentPosition].GetComponent<CellUtil>().getPlaceName() + ". Bạn có muốn mua không?");
+						else showDialog("Bạn không đủ tiền mặt, bạn cần " + (payMoney - _currentPlayerMoney).ToString() + "$ để nâng cấp nhà tại " + _places[_currentPosition].GetComponent<CellUtil>().getPlaceName() + ". Bạn có muốn nâng cấp nhà không?");
+						ConditionTrackableEventHandler._type = 1;
+						_isWaitCardChoiceCityProcess = true;
 
-    public void saleHouseProcess1()
-    {
-        _type = 1;
-        _totalPayMoney = _places[_currentPosition].GetComponent<CellUtil>().getPrice(_places[_currentPosition].GetComponent<CellUtil>().getCurrentHouseLevel());
-        //Hiện thông báo có muốn bán nhà khác để xây nhà này không
-        //Giả sử chọn có
-        for (int i = 0; i < _ownerHouses.Count; i++)
-        {
-            _ownerHouses[i].GetComponent<CellUtil>().playHighLightColor();
-            _targets.transform.Find(_ownerHouses[i].name).GetComponent<CellTrackableEventHandler>()._needToProcess = true;
-        }
-        _isWaitCardChoiceSaleHouse = true;
-        _shouldThrowDice = false;
-    }
+					}
+					//-------------------------------------------------
+				}
+			}
+		}
+		else
+		{
+			//Nếu đi vào nhà của người khác
+			//Show dialog
 
-    public void saleHouseProcess2()
-    {
-        _type = 2;
-        _totalPayMoney = _places[_currentPosition].GetComponent<CellUtil>().getVisitPrice(_places[_currentPosition].GetComponent<CellUtil>().getCurrentHouseLevel());
-        //Bán nhà
-        for (int i = 0; i < _ownerHouses.Count; i++)
-        {
-            _ownerHouses[i].GetComponent<CellUtil>().playHighLightColor();
-            _targets.transform.Find(_ownerHouses[i].name).GetComponent<CellTrackableEventHandler>()._needToProcess = true;
-        }
-        _isWaitCardChoiceSaleHouse = true;
-        _shouldThrowDice = false;
-    }
+			int payMoney = _places[_currentPosition].GetComponent<CellUtil>().getVisitPrice(currentHouseLevel);
+			if (_currentPlayerMoney >= payMoney)
+			{
+				PlayerController.GetInstance().AddMoneyPlayer(_currentTurnIdx, -payMoney); //Trừ tiền
+				PlayerController.GetInstance().AddMoneyPlayer(_places[_currentPosition].GetComponent<CellUtil>().getOwnerIdx(), payMoney); //Cộng tiền cho đội bạn
+			}
+			else
+			{
+				//Bắt buộc bán nhà hoặc tuyên bố phá sản
+				int total = 0;
+				_ownerHouses = new List<GameObject>();
+				for (int i = 0; i < _places.Length; i++)
+				{
+					if (_places[i].GetComponent<CellUtil>().getOwnerIdx() == _currentTurnIdx)
+					{
+						_ownerHouses.Add(_places[i]);
+						total += _places[i].GetComponent<CellUtil>().getPrice(_places[i].GetComponent<CellUtil>().getCurrentHouseLevel());
+					}
+				}
+				if ((total + _currentPlayerMoney) >= payMoney)
+				{
+					//-----------------------------------------------
+					//Sale house process 2
+					//showDialog();
+					showDialog("Bạn không đủ tiền mặt, bạn cần " + (payMoney - _currentPlayerMoney).ToString() + "$ để trả tiền ghé thăm tại " + _places[_currentPosition].GetComponent<CellUtil>().getPlaceName() + ". Bạn có muốn bán nhà để chi trả không?");
+					ConditionTrackableEventHandler._type = 2;
+					_isWaitCardChoiceCityProcess = true;
 
-    public void FlyEnimHousePosition () {
-		int cur = PlayerController.GetInstance ()._playerTurnIdx;
+					//-------------------------------------
+				}
+				else
+				{
+					//Phá sản
+					//showDialog("Phá sản");
+					//Next turn
+					int delta = 1;
+					if (_isSameDice)
+					{
+						delta = 0;
+					}
+					PlayerController.GetInstance().SetPlayerTurnIdx(delta);
+					gameControllerInstance._shouldThrowDice = true;
+				}
+			}
+		}
+	}
+
+	public void MyHideDialog() {
+		_canvas.transform.Find("Dialog").gameObject.GetComponent<DialogEffect>().hideDialog();
+	}
+
+	public void hideDialog()
+	{
+		//_canvas.transform.Find("Dialog").gameObject.SetActive(false);
+		_shouldThrowDice = true;
+		_canvas.transform.Find("Dialog").gameObject.GetComponent<DialogEffect>().hideDialog();
+	}
+
+	public void showDialog(string text)
+	{
+		_shouldThrowDice = false;
+		//_canvas.transform.Find("Dialog").gameObject.SetActive(true);
+		_canvas.transform.Find("Dialog").gameObject.transform.Find("Text").GetComponent<Text>().text = text;
+		_canvas.transform.Find("Dialog").gameObject.GetComponent<DialogEffect>().showDialog();
+	}
+
+	public void buildHouseProcess()
+	{
+		PlayerController.GetInstance().AddMoneyPlayer(_currentTurnIdx, -_places[_currentPosition].GetComponent<CellUtil>().getPrice(_places[_currentPosition].GetComponent<CellUtil>().getCurrentHouseLevel()));
+		//Build house
+		if (_places[_currentPosition].GetComponent<CellUtil>().upgradeHouse(_currentTurnIdx) == 1)
+		{
+			//Nếu còn có thể xây thêm nhà
+			//Hiện thông báo
+			Debug.Log("Upgrade");
+		}
+		int delta = 1;
+		if (_isSameDice)
+		{
+			delta = 0;
+		}
+		PlayerController.GetInstance().SetPlayerTurnIdx(delta);
+		gameControllerInstance._shouldThrowDice = true;
+	}
+
+	public void saleHouseProcess1()
+	{
+		_type = 1;
+		_totalPayMoney = _places[_currentPosition].GetComponent<CellUtil>().getPrice(_places[_currentPosition].GetComponent<CellUtil>().getCurrentHouseLevel());
+		//Hiện thông báo có muốn bán nhà khác để xây nhà này không
+		//Giả sử chọn có
+		for (int i = 0; i < _ownerHouses.Count; i++)
+		{
+			_ownerHouses[i].GetComponent<CellUtil>().playHighLightColor();
+			_targets.transform.Find(_ownerHouses[i].name).GetComponent<CellTrackableEventHandler>()._needToProcess = true;
+		}
+		_isWaitCardChoiceSaleHouse = true;
+		_shouldThrowDice = false;
+	}
+
+	public void saleHouseProcess2()
+	{
+		_type = 2;
+		_totalPayMoney = _places[_currentPosition].GetComponent<CellUtil>().getVisitPrice(_places[_currentPosition].GetComponent<CellUtil>().getCurrentHouseLevel());
+		//Bán nhà
+		for (int i = 0; i < _ownerHouses.Count; i++)
+		{
+			_ownerHouses[i].GetComponent<CellUtil>().playHighLightColor();
+			_targets.transform.Find(_ownerHouses[i].name).GetComponent<CellTrackableEventHandler>()._needToProcess = true;
+		}
+		_isWaitCardChoiceSaleHouse = true;
+		_shouldThrowDice = false;
+	}
+
+	public void FlyEnimHousePosition () {
+		int cur = PlayerController.GetInstance ().GetPlayerTurnIdx();
 		int next = PlayerController.GetInstance ().GetNextPlayTurnIdx ();
 		for (int i = 1; i < 36; i++) {
-			if (_places [i].GetComponent<CellUtil> ().getOwnerIdx () != cur) {
+			int owner = _places [i].GetComponent<CellUtil> ().getOwnerIdx ();
+			if (owner != -1 && owner == next) {
 				_plane = Instantiate (_planePrefab, _gameObjectInBoard.transform);
-				_plane.transform.localPosition = _places [27].transform.localPosition + new Vector3 (0f, 0.2f, 0f);
+				_plane.transform.localPosition = _places [PlayerController.GetInstance ().GetCurrentPlayer ()._position].transform.localPosition + new Vector3 (0f, 0.2f, 0f);
 				PlayerController.GetInstance ().SetActivePlayer (false);
 				StartCoroutine(FlyPlayer(_plane, cur, PlayerController.GetInstance ().GetCurrentPlayer ()._position, i));
 				return;
 			}
 		}
-		for (int j = 0; j < 4; j++) {
-			if (j != cur && j != next) {
-				for (int i = 1; i < 36; i++) {
-					if (_places [i].GetComponent<CellUtil> ().getOwnerIdx () != cur) {
-						_plane = Instantiate (_planePrefab, _gameObjectInBoard.transform);
-						_plane.transform.localPosition = _places [27].transform.localPosition + new Vector3 (0f, 0.2f, 0f);
-						PlayerController.GetInstance ().SetActivePlayer (false);
-						StartCoroutine (FlyPlayer (_plane, cur, PlayerController.GetInstance ().GetCurrentPlayer ()._position, i));
-						return;
-					}
-				}
+
+		for (int i = 1; i < 36; i++) {
+			int owner = _places [i].GetComponent<CellUtil> ().getOwnerIdx ();
+			if (owner != -1 && owner != cur) {
+				_plane = Instantiate (_planePrefab, _gameObjectInBoard.transform);
+				_plane.transform.localPosition = _places [PlayerController.GetInstance ().GetCurrentPlayer ()._position].transform.localPosition + new Vector3 (0f, 0.2f, 0f);
+				PlayerController.GetInstance ().SetActivePlayer (false);
+				StartCoroutine (FlyPlayer (_plane, cur, PlayerController.GetInstance ().GetCurrentPlayer ()._position, i));
+				return;
 			}
 		}
 
-		int delta = 1;
-		if (_isSameDice) {
-			delta = 0;
-		}
-		PlayerController.GetInstance ().SetPlayerTurnIdx (delta);
-		gameControllerInstance._shouldThrowDice = true;
+		SetPlayerTurnIdx ();
+		_shouldThrowDice = true;
 	}
 
 	public void DoAuction(int playeId, int position) {
@@ -549,23 +622,23 @@ public class GameController : MonoBehaviour {
 		if (fee > 0) {
 			bool res = PlayerController.GetInstance ().IncreaseMoney (-fee);
 			if (!res) {
-				// Pha san
+				showDialog ("Bạn bị phá sản");
+				gameControllerInstance.StartCoroutineHideDialog ();
 			} 
 		} else {
 			int cost = Auction.GetInstance ().GetCostToAuction (playeId, position);
-			if (cost > 0 && cost >= PlayerController.GetInstance().GetMoneyCurrentPlayer()) {
+			if (cost > 0 && cost <= PlayerController.GetInstance().GetMoneyCurrentPlayer()) {
 				// Hoi ban co muon dau gia khong?
+				showDialog("Bạn có muốn đấu gía không?");
+				_isWaitCardChoice = true;
 			}
 		}
 
-		int delta = 1;
-		if (_isSameDice)
-			delta = 0;
-		PlayerController.GetInstance ().SetPlayerTurnIdx (delta);
+		SetPlayerTurnIdx ();
 		_shouldThrowDice = true;
 	}
 
-	public static int GetRandomIntExcecpt(int i) {
+	public static int GetRandomIntExcept(int i) {
 		while (true) {
 			int res = Random.Range (0, 36);
 			if (res != i)
@@ -576,7 +649,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void RandomFly() {
-		int randomPos = GetRandomIntExcecpt (27);
+		int randomPos = GetRandomIntExcept (27);
 		_plane = Instantiate (_planePrefab, _gameObjectInBoard.transform);
 		_plane.transform.localPosition = _places [27].transform.localPosition + new Vector3 (0f, 0.2f, 0f);
 		PlayerController.GetInstance ().SetActivePlayer (false);
@@ -587,11 +660,6 @@ public class GameController : MonoBehaviour {
 		PlayerController.GetInstance ().IncreaseMoney (_bonusPassStart);
 	}
 
-    public void processSaleHouse()
-    {
-
-    }
-		
 	public void GoPrison(int curPosition) {
 		if (PlayerController.GetInstance ().GetCurrentPlayerPrisonLicense () > 0) {
 			PlayerController.GetInstance ().ChangeCurrentPlayerPrisonLicense (-1);
@@ -610,7 +678,7 @@ public class GameController : MonoBehaviour {
 	public void LuckyAndUnlucky() {
 		_canvas.transform.Find ("LuckyAndUnlucky").gameObject.SetActive (true);
 		_isWaitCardChoice = true;
-
+		showDialog ("Mời bạn chọn thẻ bài A, B hoặc C");
 		if (AR_MODE_ON) {
 			_fullBoard.SetActive (false);
 			for (int i = 0; i < _cardChoiceTarget.Length; i++)
@@ -646,18 +714,21 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void GetUnluckyAndUnluckyResult(int result) {
-		int randomMoney = Random.Range (1, 3) * 1000;
+		int randomMoney = 1000 * Random.Range (1, 4) ;
 		int delta = 1;
 		if (_typeCurrentEvent == _valOpportunity) {
 			switch (result) {
 			case 0:
+				showDialog("Chúc mừng bạn miễn vào tù một lần");
 				PlayerController.GetInstance ().GetCurrentPlayer ()._prisonLicense += 1;
 				break;
 			case 1:
 				// Them luot
+				showDialog("Chúc mừng bạn được thêm một lượt đi");
 				delta = 0;
 				break;
 			case 2:
+				showDialog("Chúc mừng bạn được nhận số tiền: " + randomMoney.ToString());
 				PlayerController.GetInstance ().GetCurrentPlayer ()._money += randomMoney;
 				break;
 			}
@@ -665,22 +736,27 @@ public class GameController : MonoBehaviour {
 			switch (result) {
 			case 0:
 				// Bay den nha doi thu
+				showDialog("Bay đến nhà của người chơi khác");
+				gameControllerInstance.StartCoroutineHideDialog ();
 				FlyEnimHousePosition();
 				return;
 			case 1:
 				// Mat Luot
+				showDialog("Bạn bị mất lượt lần sau");
 				PlayerController.GetInstance().GetCurrentPlayer()._turnExtra -= 1;
 				break;
 			case 2:
+				showDialog("Bạn tặng quà sinh nhật cho bạn với số tiền là: " + randomMoney.ToString());
 				PlayerController.GetInstance ().GetCurrentPlayer ()._money -= randomMoney;
 				break;
 			}
 		}
 		if (_isSameDice)
 			delta = 0;
-		
+
 		PlayerController.GetInstance ().SetPlayerTurnIdx (delta);
 		_shouldThrowDice = true;
+		gameControllerInstance.StartCoroutineHideDialog ();
 	}
 
 	IEnumerator RotateUIImage(Transform img, int result, Sprite replace, float duration)
@@ -744,7 +820,7 @@ public class GameController : MonoBehaviour {
 
 		return _valBuildHouse;
 	}
-		
+
 	IEnumerator FlyPlayer(GameObject model, int playerIdx, int startPos, int endPos)
 	{
 		Vector3 target = _places [endPos].transform.localPosition;

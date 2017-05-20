@@ -23,9 +23,9 @@ public class Auction  {
 		AuctionPlace tddl = new AuctionPlace ("TDDL", 15000, 1500);
 		AuctionPlace tddk = new AuctionPlace ("TDDK", 20000, 2000);
 
-		_auctions.Add ("16", tdvt);
-		_auctions.Add ("25", tddl);
-		_auctions.Add ("29", tddk);
+		_auctions.Add ("tdvt", tdvt);
+		_auctions.Add ("tddl", tddl);
+		_auctions.Add ("tddk", tddk);
 	}
 
 	private class AuctionPlace {
@@ -46,11 +46,19 @@ public class Auction  {
 		}
 	}
 
+	AuctionPlace GetAuctionPlace(int pos) {
+		if (pos == 17)
+			return _instance._auctions ["tdvt"];
+		if (pos == 26)
+			return _instance._auctions ["tddl"];
+		return _instance._auctions ["tddk"];
+	}
+
 	// -1 thi` ko mất phí, chuyển qua hàm đấu giá
 	// 0: chủ -> ko mất phí
 	// > 0: đóng phí là _fee 
 	public int CheckFee(int position, int playerId) {
-		AuctionPlace ap = _instance._auctions [position.ToString()];
+		AuctionPlace ap = GetAuctionPlace(position);
 		if (ap._owner != -1) {
 			if (ap._owner == playerId)
 				return 0;
@@ -63,9 +71,9 @@ public class Auction  {
 
 	// 0: ko thể đấu giá dc nữa
 	// >0: chi phi dau gia
-	public int GetCostToAuction(int position, int playerId) {
-		AuctionPlace ap = _instance._auctions [position.ToString()];
-
+	public int GetCostToAuction(int playerId, int position) {
+		AuctionPlace ap = GetAuctionPlace(position);
+		Debug.Log ("Debug playerID " + playerId.ToString ());
 		if (!ap._canBuy [playerId])
 			return 0;
 
@@ -73,22 +81,36 @@ public class Auction  {
 	}
 
 	public void ReceiveAuctionResult(int position, int playerId, bool accept) {
-		AuctionPlace ap = _instance._auctions [position.ToString()];
+		AuctionPlace ap = GetAuctionPlace(position);
 
 		if (!accept) {
 			int cnt = 0;
 			ap._canBuy [playerId] = false;
+			PlayerController.GetInstance ().AddMoneyPlayer (playerId, ap._auctedMoney [playerId]);
+			ap._auctedMoney [playerId] = 0;
 			for (int i = 0; i < 4; i++)
 				if (ap._canBuy [i])
 					cnt++;
 			if (cnt == 1) {
 				for (int i = 0; i < 4; i++)
-					if (ap._canBuy [i])
+					if (ap._canBuy [i] && ap._auctedMoney [i] > 0) {
 						ap._owner = i;
+						ap._fee = ap._auctedMoney [i] / 2;
+					}
 			}
 		} else {
 			ap._curMoney += ap._rate;
 			ap._auctedMoney [playerId] = ap._curMoney;
+			int cnt = 0;
+			for (int i = 0; i < 4; i++)
+				if (ap._canBuy [i])
+					cnt++;
+			if (cnt == 1) {
+				ap._owner = playerId;
+				ap._fee = ap._fee = ap._auctedMoney [playerId] / 2;
+			}
 		}
+
+		GameController.GetInstance ().HandleAfterFinishAuction ();
 	}
 }
