@@ -1,2 +1,285 @@
 Base path: C:/Program Files/Unity/Editor/Data
 Cmd: getPlatforms
+Cmd: preprocess
+  insize=9655 outsize=2157 ok=1
+Cmd: preprocess
+  insize=11393 outsize=689 ok=1
+Cmd: preprocess
+  insize=1646 outsize=318 ok=1
+Cmd: preprocess
+  insize=1546 outsize=547 ok=1
+Cmd: preprocess
+  insize=1371 outsize=507 ok=1
+Cmd: preprocess
+  insize=10152 outsize=885 ok=1
+Cmd: preprocess
+  insize=2445 outsize=707 ok=1
+Cmd: preprocess
+  insize=1844 outsize=424 ok=1
+Cmd: preprocess
+  insize=895 outsize=401 ok=1
+Cmd: preprocess
+  insize=1059 outsize=429 ok=1
+Cmd: preprocess
+  insize=1149 outsize=390 ok=1
+Cmd: preprocess
+  insize=794 outsize=282 ok=1
+Cmd: preprocess
+  insize=4483 outsize=1171 ok=1
+Cmd: preprocess
+  insize=1819 outsize=540 ok=1
+Cmd: preprocess
+  error: 2 plat 19 at (33): Can't find include file Assets/Light2D/Resources/Shaders/LightBase.cginc
+  insize=2474 outsize=788 ok=0
+Cmd: preprocess
+  insize=1444 outsize=485 ok=1
+Cmd: preprocess
+  insize=3862 outsize=734 ok=1
+Cmd: preprocess
+  error: 2 plat 19 at (30): Can't find include file Assets/Light2D/Resources/Shaders/LightBase.cginc
+  insize=960 outsize=623 ok=0
+Cmd: preprocess
+  insize=1381 outsize=483 ok=1
+Cmd: preprocess
+  insize=6914 outsize=770 ok=1
+Cmd: preprocess
+  insize=1320 outsize=387 ok=1
+Cmd: preprocess
+  insize=13447 outsize=2733 ok=1
+Cmd: preprocess
+  error: 2 plat 19 at (30): Can't find include file Assets/Light2D/Resources/Shaders/LightBase.cginc
+  insize=960 outsize=623 ok=0
+Cmd: preprocess
+  insize=2838 outsize=769 ok=1
+Cmd: preprocess
+  insize=1187 outsize=541 ok=1
+Cmd: preprocess
+  insize=1112 outsize=377 ok=1
+Cmd: preprocess
+  insize=1464 outsize=441 ok=1
+Cmd: preprocess
+  insize=1846 outsize=803 ok=1
+Cmd: preprocess
+  insize=1550 outsize=417 ok=1
+Cmd: preprocess
+  insize=832 outsize=289 ok=1
+Cmd: preprocess
+  insize=1423 outsize=401 ok=1
+Cmd: preprocess
+  insize=2486 outsize=727 ok=1
+Cmd: preprocess
+  insize=1104 outsize=343 ok=1
+Cmd: preprocess
+  insize=1497 outsize=605 ok=1
+Cmd: preprocess
+  insize=6834 outsize=953 ok=1
+Cmd: preprocess
+  insize=33485 outsize=324 ok=1
+Cmd: preprocess
+  insize=1367 outsize=333 ok=1
+Cmd: preprocess
+  insize=3839 outsize=702 ok=1
+Cmd: preprocess
+  insize=1144 outsize=322 ok=1
+Cmd: preprocess
+  insize=5672 outsize=1612 ok=1
+Cmd: preprocess
+  insize=1796 outsize=379 ok=1
+Cmd: preprocess
+  insize=1029 outsize=329 ok=1
+Cmd: preprocess
+  error: 2 plat 19 at (30): Can't find include file Assets/Light2D/Resources/Shaders/LightBase.cginc
+  insize=960 outsize=623 ok=0
+Cmd: preprocess
+  insize=305 outsize=305 ok=1
+Cmd: preprocess
+  insize=14465 outsize=1985 ok=1
+Cmd: preprocess
+  insize=1182 outsize=432 ok=1
+Cmd: preprocess
+  insize=12580 outsize=2611 ok=1
+Cmd: preprocess
+  insize=6617 outsize=723 ok=1
+Cmd: preprocess
+  insize=3178 outsize=750 ok=1
+Cmd: preprocess
+  error: 2 plat 19 at (30): Can't find include file Assets/Light2D/Resources/Shaders/LightBase.cginc
+  insize=960 outsize=623 ok=0
+Cmd: preprocess
+  insize=11953 outsize=2625 ok=1
+Cmd: preprocess
+  insize=2678 outsize=1259 ok=1
+Cmd: preprocess
+  insize=1119 outsize=518 ok=1
+Cmd: preprocess
+  insize=14417 outsize=2466 ok=1
+Cmd: preprocess
+  error: 2 plat 19 at (30): Can't find include file Assets/Light2D/Resources/Shaders/LightBase.cginc
+  insize=960 outsize=623 ok=0
+Cmd: preprocess
+  insize=2133 outsize=537 ok=1
+Cmd: preprocess
+  insize=1508 outsize=724 ok=1
+Cmd: preprocess
+  insize=2053 outsize=674 ok=1
+Cmd: preprocess
+  error: 2 plat 19 at (30): Can't find include file Assets/Light2D/Resources/Shaders/LightBase.cginc
+  insize=958 outsize=621 ok=0
+Cmd: preprocess
+  insize=1531 outsize=722 ok=1
+Cmd: preprocess
+  insize=1849 outsize=374 ok=1
+Cmd: preprocess
+  insize=28379 outsize=4294 ok=1
+Cmd: preprocess
+  insize=4351 outsize=574 ok=1
+Cmd: preprocess
+  insize=2464 outsize=1294 ok=1
+Cmd: preprocess
+  insize=2466 outsize=728 ok=1
+Cmd: preprocess
+  insize=1845 outsize=353 ok=1
+Cmd: preprocess
+  insize=1173 outsize=427 ok=1
+Cmd: preprocess
+  insize=1284 outsize=508 ok=1
+Cmd: preprocess
+  insize=6168 outsize=839 ok=1
+Cmd: preprocess
+  insize=5928 outsize=727 ok=1
+Cmd: preprocess
+  insize=7672 outsize=834 ok=1
+Cmd: preprocess
+  insize=1608 outsize=582 ok=1
+Cmd: preprocess
+  insize=33494 outsize=324 ok=1
+Cmd: preprocess
+  error: 2 plat 19 at (30): Can't find include file Assets/Light2D/Resources/Shaders/LightBase.cginc
+  insize=960 outsize=623 ok=0
+Cmd: preprocess
+  insize=290 outsize=290 ok=1
+Cmd: preprocess
+  insize=5432 outsize=1822 ok=1
+Cmd: preprocess
+  insize=7009 outsize=305 ok=1
+Cmd: preprocess
+  insize=4543 outsize=467 ok=1
+Cmd: preprocess
+  insize=5161 outsize=992 ok=1
+Cmd: preprocess
+  insize=1458 outsize=458 ok=1
+Cmd: preprocess
+  insize=6093 outsize=1291 ok=1
+Cmd: preprocess
+  insize=855 outsize=358 ok=1
+Cmd: preprocess
+  insize=4159 outsize=641 ok=1
+Cmd: preprocess
+  insize=2586 outsize=629 ok=1
+Cmd: preprocess
+  insize=1011 outsize=373 ok=1
+Cmd: preprocess
+  insize=1491 outsize=370 ok=1
+Cmd: preprocess
+  insize=2350 outsize=1060 ok=1
+Cmd: preprocess
+  insize=5625 outsize=807 ok=1
+Cmd: preprocess
+  insize=1840 outsize=573 ok=1
+Cmd: preprocess
+  insize=1157 outsize=548 ok=1
+Cmd: preprocess
+  insize=1370 outsize=465 ok=1
+Cmd: preprocess
+  insize=701 outsize=331 ok=1
+Cmd: preprocess
+  insize=858 outsize=391 ok=1
+Cmd: preprocess
+  error: 2 plat 19 at (30): Can't find include file Assets/Light2D/Resources/Shaders/LightBase.cginc
+  insize=960 outsize=623 ok=0
+Cmd: preprocess
+  insize=5602 outsize=870 ok=1
+Cmd: preprocess
+  insize=1886 outsize=767 ok=1
+Cmd: preprocess
+  insize=725 outsize=275 ok=1
+Cmd: compileSnippet
+  error: 2 plat 4 at (33): failed to open source file: 'Assets/Light2D/Resources/Shaders/LightBase.cginc'\nCompiling Vertex program with ORTHOGRAPHIC_CAMERA
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA
+  api=4 type=0 insize=1990 outsize=0 kw=ORTHOGRAPHIC_CAMERA pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=0
+Cmd: compileSnippet
+  error: 2 plat 4 at (33): failed to open source file: 'Assets/Light2D/Resources/Shaders/LightBase.cginc'\nCompiling Fragment program with ORTHOGRAPHIC_CAMERA
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA
+  api=4 type=1 insize=1990 outsize=0 kw=ORTHOGRAPHIC_CAMERA pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=0
+Cmd: compileSnippet
+  error: 2 plat 4 at (30): failed to open source file: 'Assets/Light2D/Resources/Shaders/LightBase.cginc'\nCompiling Vertex program with ORTHOGRAPHIC_CAMERA
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA
+  api=4 type=0 insize=641 outsize=0 kw=ORTHOGRAPHIC_CAMERA pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=0
+Cmd: compileSnippet
+  error: 2 plat 4 at (30): failed to open source file: 'Assets/Light2D/Resources/Shaders/LightBase.cginc'\nCompiling Fragment program with ORTHOGRAPHIC_CAMERA
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA
+  api=4 type=1 insize=641 outsize=0 kw=ORTHOGRAPHIC_CAMERA pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=0
+Cmd: compileSnippet
+  error: 2 plat 4 at (30): failed to open source file: 'Assets/Light2D/Resources/Shaders/LightBase.cginc'\nCompiling Vertex program with ORTHOGRAPHIC_CAMERA
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA
+  api=4 type=0 insize=641 outsize=0 kw=ORTHOGRAPHIC_CAMERA pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=0
+Cmd: compileSnippet
+  error: 2 plat 4 at (30): failed to open source file: 'Assets/Light2D/Resources/Shaders/LightBase.cginc'\nCompiling Fragment program with ORTHOGRAPHIC_CAMERA
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA
+  api=4 type=1 insize=641 outsize=0 kw=ORTHOGRAPHIC_CAMERA pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=0
+Cmd: compileSnippet
+  error: 2 plat 4 at (30): failed to open source file: 'Assets/Light2D/Resources/Shaders/LightBase.cginc'\nCompiling Vertex program with ORTHOGRAPHIC_CAMERA
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA
+  api=4 type=0 insize=641 outsize=0 kw=ORTHOGRAPHIC_CAMERA pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=0
+Cmd: compileSnippet
+  error: 2 plat 4 at (30): failed to open source file: 'Assets/Light2D/Resources/Shaders/LightBase.cginc'\nCompiling Fragment program with ORTHOGRAPHIC_CAMERA
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA
+  api=4 type=1 insize=641 outsize=0 kw=ORTHOGRAPHIC_CAMERA pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=0
+Cmd: compileSnippet
+  error: 2 plat 4 at (30): failed to open source file: 'Assets/Light2D/Resources/Shaders/LightBase.cginc'\nCompiling Vertex program with ORTHOGRAPHIC_CAMERA
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA
+  api=4 type=0 insize=641 outsize=0 kw=ORTHOGRAPHIC_CAMERA pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=0
+Cmd: compileSnippet
+  error: 2 plat 4 at (30): failed to open source file: 'Assets/Light2D/Resources/Shaders/LightBase.cginc'\nCompiling Fragment program with ORTHOGRAPHIC_CAMERA
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA
+  api=4 type=1 insize=641 outsize=0 kw=ORTHOGRAPHIC_CAMERA pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=0
+Cmd: compileSnippet
+  error: 2 plat 4 at (30): failed to open source file: 'Assets/Light2D/Resources/Shaders/LightBase.cginc'\nCompiling Vertex program with ORTHOGRAPHIC_CAMERA
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA
+  api=4 type=0 insize=641 outsize=0 kw=ORTHOGRAPHIC_CAMERA pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=0
+Cmd: compileSnippet
+  error: 2 plat 4 at (30): failed to open source file: 'Assets/Light2D/Resources/Shaders/LightBase.cginc'\nCompiling Fragment program with ORTHOGRAPHIC_CAMERA
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA
+  api=4 type=1 insize=641 outsize=0 kw=ORTHOGRAPHIC_CAMERA pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=0
+Cmd: compileSnippet
+  error: 2 plat 4 at (30): failed to open source file: 'Assets/Light2D/Resources/Shaders/LightBase.cginc'\nCompiling Vertex program with ORTHOGRAPHIC_CAMERA
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA
+  api=4 type=0 insize=641 outsize=0 kw=ORTHOGRAPHIC_CAMERA pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=0
+Cmd: compileSnippet
+  error: 2 plat 4 at (30): failed to open source file: 'Assets/Light2D/Resources/Shaders/LightBase.cginc'\nCompiling Fragment program with ORTHOGRAPHIC_CAMERA
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA
+  api=4 type=1 insize=641 outsize=0 kw=ORTHOGRAPHIC_CAMERA pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=0
+Cmd: compileSnippet
+  error: 2 plat 4 at (30): failed to open source file: 'Assets/Light2D/Resources/Shaders/LightBase.cginc'\nCompiling Vertex program with ORTHOGRAPHIC_CAMERA
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA
+  api=4 type=0 insize=641 outsize=0 kw=ORTHOGRAPHIC_CAMERA pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=0
+Cmd: compileSnippet
+  error: 2 plat 4 at (30): failed to open source file: 'Assets/Light2D/Resources/Shaders/LightBase.cginc'\nCompiling Fragment program with ORTHOGRAPHIC_CAMERA
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA
+  api=4 type=1 insize=641 outsize=0 kw=ORTHOGRAPHIC_CAMERA pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=0
+Cmd: compileSnippet
+  error: 2 plat 4 at (30): failed to open source file: 'Assets/Light2D/Resources/Shaders/LightBase.cginc'\nCompiling Vertex program with ORTHOGRAPHIC_CAMERA
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA
+  api=4 type=0 insize=641 outsize=0 kw=ORTHOGRAPHIC_CAMERA pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=0
+Cmd: compileSnippet
+  error: 2 plat 4 at (30): failed to open source file: 'Assets/Light2D/Resources/Shaders/LightBase.cginc'\nCompiling Fragment program with ORTHOGRAPHIC_CAMERA
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA
+  api=4 type=1 insize=641 outsize=0 kw=ORTHOGRAPHIC_CAMERA pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=0
+Cmd: compileSnippet
+  error: 2 plat 4 at (30): failed to open source file: 'Assets/Light2D/Resources/Shaders/LightBase.cginc'\nCompiling Vertex program with ORTHOGRAPHIC_CAMERA
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA
+  api=4 type=0 insize=641 outsize=0 kw=ORTHOGRAPHIC_CAMERA pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=0
+Cmd: compileSnippet
+  error: 2 plat 4 at (30): failed to open source file: 'Assets/Light2D/Resources/Shaders/LightBase.cginc'\nCompiling Fragment program with ORTHOGRAPHIC_CAMERA
+Platform defines: UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA
+  api=4 type=1 insize=641 outsize=0 kw=ORTHOGRAPHIC_CAMERA pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=0

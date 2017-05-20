@@ -13,6 +13,8 @@ public class CellUtil : MonoBehaviour
 
     public Material _material;
     public GameObject _upgradeEffect;
+    public GameController _destroyEffect;
+    public string _placeName;
 
     private GameObject _effect;
     private GameObject _currentHouse;
@@ -25,7 +27,7 @@ public class CellUtil : MonoBehaviour
     private bool _isIncrese, _isPlay;
     private int _type;
     private bool _isShow;
-   
+
     // Use this for initialization
     void Start()
     {
@@ -209,6 +211,14 @@ public class CellUtil : MonoBehaviour
     {
         return _currentHouseLevel;
     }
+    public int getCurrentPrice()
+    {
+        return _price[_currentHouseLevel];
+    }
+    public int getCurrentVisitPrice()
+    {
+        return _visitPrice[_currentHouseLevel];
+    }
     public void setOwnerIdx(int idx)
     {
         _ownerIdx = idx;
@@ -223,6 +233,10 @@ public class CellUtil : MonoBehaviour
         _isShow = true;
         StartCoroutine(StartWait(showTime));
     }
+    public void stopHighLightColor()
+    {
+        _isShow = false;
+    }
 
     public void playHighLightColor()
     {
@@ -230,19 +244,20 @@ public class CellUtil : MonoBehaviour
         _isShow = true;
     }
 
-    public void stopHighLightColor()
+    public string getPlaceName()
     {
-        _isShow = false;
+        return _placeName;
     }
+
     public int upgradeHouse(int ownerIdx)
     {
+        Debug.Log("Upgrade house");
         if (_ownerIdx == -1)
         {
             _ownerIdx = ownerIdx;
             Debug.Log(_ownerIdx);
             //Gắn cờ _flags cho vùng đất mới mua
             _currentFlag = Instantiate(_flags[_ownerIdx], _tempateModels[4].transform.position, _tempateModels[4].transform.rotation, this.gameObject.transform);
-
         }
         else
         {
@@ -252,7 +267,7 @@ public class CellUtil : MonoBehaviour
                 //Chưa có ai xây
                 if (_currentHouseLevel == 0)
                 {
-                    _ownerIdx = ownerIdx;
+                    //_ownerIdx = ownerIdx;
                     //Gỡ cờ
                     Destroy(_currentFlag);
                     _currentHouse = Instantiate(_houseModels[4 * ownerIdx + _currentHouseLevel], _tempateModels[_currentHouseLevel].transform.position, _tempateModels[_currentHouseLevel].transform.rotation, this.gameObject.transform);
@@ -278,9 +293,17 @@ public class CellUtil : MonoBehaviour
             else return 0;
         }
 
-        if (_effect == null)
-            _effect = Instantiate(_upgradeEffect, _tempateModels[3].transform.position, _tempateModels[3].transform.rotation, this.gameObject.transform);
-        else _effect.GetComponent<ParticleSystem>().Play(true);
+        if (_effect != null) Destroy(_effect);
+        _effect = Instantiate(_upgradeEffect, _tempateModels[3].transform.position, _tempateModels[3].transform.rotation, this.gameObject.transform);
         return 1;
+    }
+    public void destroyHouse()
+    {
+        if (_currentFlag != null) Destroy(_currentFlag);
+        if (_currentHouse != null) Destroy(_currentHouse);
+        if (_effect != null) Destroy(_effect);
+        //Instantiate(_destroyEffect, _tempateModels[3].transform.position, _tempateModels[3].transform.rotation, this.gameObject.transform);
+        _currentHouseLevel = 0;
+        _ownerIdx = -1;
     }
 }

@@ -114,8 +114,15 @@ public class PlayerController : MonoBehaviour {
 	public int GetMoneyCurrentPlayer() {
 		return _players [_playerTurnIdx]._money;
 	}
-
-	public void SetActivePlayer(bool val) {
+    public int GetMoneyPlayer(int playerIdx)
+    {
+        return _players[playerIdx]._money;
+    }
+    public int SetMoneyPlayer(int playerIdx, int money)
+    {
+        return _players[_playerTurnIdx]._money = money;
+    }
+    public void SetActivePlayer(bool val) {
 		Ultility.MyDebug ("Hide player", val.ToString ());
 		_players [_playerTurnIdx]._player.SetActive (val);
 	}
@@ -152,7 +159,7 @@ public class PlayerController : MonoBehaviour {
 	private float gravity = 2 * 9.8f; 
 	IEnumerator MovePlayerInCurve(int direction) // direction 1: forward, -1: backward
 	{
-		GameController.GetInstance ().EditCamera (_players[_playerTurnIdx]);
+//		GameController.GetInstance ().EditCamera (_players[_playerTurnIdx]);
 		// Calcute number player have the same position with current player to set transparent
 		int cnt = 1;
 		for (int i = 0; i < _playerNum; i++) { 
@@ -241,7 +248,7 @@ public class PlayerController : MonoBehaviour {
 		if (_stepNum < 4)
 			yield return new WaitForSeconds(1f);
 
-		GameController.GetInstance ().ResetCamera ();
+//		GameController.GetInstance ().ResetCamera ();
 		GetComponent<DiceEventHandler>().SetIsMovePlayer(_isMovePlayer);
 
         // Moving player is finished.
