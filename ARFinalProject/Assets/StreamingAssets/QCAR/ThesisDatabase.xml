@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
+  <Tracking>
+    <ImageTarget name="Board" size="50.000000 50.118626" />
+    <ImageTarget name="Sale" size="100.000000 100.000000" />
+    <ImageTarget name="HNC" size="100.000000 204.556351" />
+    <ImageTarget name="HG" size="100.000000 49.069004" />
+    <ImageTarget name="HT" size="100.000000 201.791046" />
+    <ImageTarget name="CM" size="100.000000 202.994019" />
+    <ImageTarget name="Yes" size="100.000000 68.556702" />
+    <ImageTarget name="TN" size="100.000000 49.069374" />
+    <ImageTarget name="TH" size="100.000000 202.047775" />
+    <ImageTarget name="TDVT" size="100.000000 49.241146" />
+    <ImageTarget name="TDDL" size="100.000000 203.793106" />
+    <ImageTarget name="TDDK" size="100.000000 48.900169" />
+    <ImageTarget name="No" size="100.000000 66.800003" />
+    <ImageTarget name="NB" size="100.000000 203.448273" />
+    <ImageTarget name="LD" size="100.000000 49.235992" />
+    <ImageTarget name="LA" size="100.000000 203.103455" />
+    <ImageTarget name="KH" size="100.000000 49.069374" />
+    <ImageTarget name="HUE" size="100.000000 201.718216" />
+    <ImageTarget name="HP" size="100.000000 49.491524" />
+    <ImageTarget name="HN" size="100.000000 48.983051" />
+    <ImageTarget name="HCM" size="100.000000 203.448273" />
+    <ImageTarget name="HB" size="100.000000 49.322033" />
+    <ImageTarget name="DNC" size="100.000000 202.397263" />
+    <ImageTarget name="DN" size="100.000000 49.069374" />
+    <ImageTarget name="CT" size="100.000000 201.718216" />
+    <ImageTarget name="C" size="100.000000 112.474434" />
+    <ImageTarget name="BDP" size="100.000000 49.238579" />
+    <ImageTarget name="BD" size="100.000000 202.405502" />
+    <ImageTarget name="B" size="100.000000 123.318382" />
+    <ImageTarget name="A" size="100.000000 123.318382" />
+  </Tracking>
+</QCARConfig>
