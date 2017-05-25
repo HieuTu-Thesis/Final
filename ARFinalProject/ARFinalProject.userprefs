@@ -2,19 +2,16 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Controller/GameController.cs">
     <Files>
-      <File FileName="Assets/Scripts/Controller/GameController.cs" Line="651" Column="3" />
-      <File FileName="Assets/Scripts/Controller/PlayerController.cs" Line="274" Column="9" />
-      <File FileName="Assets/Scripts/Controller/CellAnimation.cs" Line="18" Column="18" />
-      <File FileName="Assets/Scripts/Controller/Player.cs" Line="21" Column="32" />
-      <File FileName="Assets/Scripts/Controller/CameraFollowPlayer.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Controller/DiceEventHandler.cs" Line="17" Column="55" />
-      <File FileName="Assets/Scripts/Controller/CellUtil.cs" Line="195" Column="19" />
-      <File FileName="Assets/Scripts/AR/MyTrackableEventHandler.cs" Line="48" Column="2" />
-      <File FileName="Assets/Scripts/Controller/Auction.cs" Line="16" Column="22" />
+      <File FileName="Assets/Scripts/Controller/DiceEventHandler.cs" Line="26" Column="16" />
+      <File FileName="Assets/Scripts/Controller/LamborController.cs" Line="5" Column="30" />
+      <File FileName="Assets/Scripts/Controller/GameController.cs" Line="284" Column="14" />
+      <File FileName="Assets/Scripts/Controller/CellUtil.cs" Line="200" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <RunToCursorBreakpoint file="/Users/mac/Next/ARFinalProject/Assets/Scripts/Controller/LamborController.cs" line="6" column="2" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

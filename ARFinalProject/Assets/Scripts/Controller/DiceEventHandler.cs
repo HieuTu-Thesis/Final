@@ -20,7 +20,7 @@ public class DiceEventHandler : MonoBehaviour {
 	private int _sumDiceValue = 0; // Total value of dices
 
 	private bool _isMovePlayer; // state: if player is moving or not
-	private int DEBUG_CELL = 13;
+	private int DEBUG_CELL = -1;
 	private bool DICESAME = false;
 
 	void Start() {
@@ -113,20 +113,25 @@ public class DiceEventHandler : MonoBehaviour {
 					_isMovePlayer = true;
 
 					bool same = valueDices [0] == valueDices [1];
-					if (DICESAME)
-						same = DICESAME;
-					if (DEBUG_CELL != -1) {
-						GameController.HandleFinishThrowDice (DEBUG_CELL, same);
+					if (!fi) {
+						if (DICESAME)
+							same = DICESAME;
+						if (DEBUG_CELL != -1) {
+							GameController.HandleFinishThrowDice (DEBUG_CELL, same);
+						} else
+							GameController.HandleFinishThrowDice (_sumDiceValue, same);
+
+					} else {
+						fi = false;
+						GameController.HandleFinishThrowDice (35, same);
 					}
-					else
-						GameController.HandleFinishThrowDice (_sumDiceValue, same);
 
 					StartCoroutine (DestroyDice (1.5f));
 				}
 			}
 		}
 	}
-
+	private bool fi = false;
 	// Distroy dice after throw
 	IEnumerator DestroyDice(float time) {
 		yield return new WaitForSeconds (time);

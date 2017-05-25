@@ -103,6 +103,9 @@
      <Compile Include="Assets\Resource\Particles\Light2D\Scripts\ObstacleCameraPostPorcessor.cs" />
      <Compile Include="Assets\Resource\Particles\Light2D\Scripts\Point2.cs" />
      <Compile Include="Assets\Resource\Particles\Light2D\Scripts\Util.cs" />
+     <Compile Include="Assets\Scripts\AR\CellTrackableEventHandler.cs" />
+     <Compile Include="Assets\Scripts\AR\ChooseHouseTrackableEventHandler.cs" />
+     <Compile Include="Assets\Scripts\AR\ConditionTrackableEventHandler.cs" />
      <Compile Include="Assets\Scripts\AR\MyTrackableEventHandler.cs" />
      <Compile Include="Assets\Scripts\Controller\ArrowAnimation.cs" />
      <Compile Include="Assets\Scripts\Controller\Auction.cs" />
@@ -111,15 +114,18 @@
      <Compile Include="Assets\Scripts\Controller\CellUtil.cs" />
      <Compile Include="Assets\Scripts\Controller\DiceEventHandler.cs" />
      <Compile Include="Assets\Scripts\Controller\GameController.cs" />
+     <Compile Include="Assets\Scripts\Controller\LamborController.cs" />
      <Compile Include="Assets\Scripts\Controller\Player.cs" />
      <Compile Include="Assets\Scripts\Controller\PlayerController.cs" />
      <Compile Include="Assets\Scripts\Controller\Ultility.cs" />
+     <Compile Include="Assets\Scripts\Effects\DialogEffect.cs" />
      <Compile Include="Assets\Scripts\Effects\Effect1.cs" />
      <Compile Include="Assets\Scripts\Effects\Effect2.cs" />
      <Compile Include="Assets\Scripts\Effects\Effect3.cs" />
      <Compile Include="Assets\Scripts\Effects\Effect4.cs" />
      <Compile Include="Assets\Scripts\Effects\LoadScene.cs" />
      <Compile Include="Assets\Scripts\Effects\MovingVehicles.cs" />
+     <Compile Include="Assets\Scripts\Effects\UIImageScript.cs" />
      <Compile Include="Assets\Scripts\Games\JackPot\JackPot.cs" />
      <Compile Include="Assets\Scripts\Games\JackPot\PotRotate.cs" />
      <Compile Include="Assets\Scripts\Games\Roulette\Light.cs" />
@@ -247,6 +253,7 @@
      <None Include="Assets\Resource\Particles\Light2D\Resources\Shaders\LightOverlay.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionSelective.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\Bokeh34.shader" />
+     <None Include="Assets\StreamingAssets\QCAR\ThesisDatabase.xml" />
      <None Include="Assets\StreamingAssets\QCAR\Test.xml" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\CameraMotionBlurDX11.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\SeparableBlurPlus.shader" />

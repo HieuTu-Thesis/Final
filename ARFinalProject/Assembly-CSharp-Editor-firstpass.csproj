@@ -146,6 +146,7 @@
      <None Include="Assets\Resource\Particles\Light2D\Resources\Shaders\LightOverlay.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionSelective.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\Bokeh34.shader" />
+     <None Include="Assets\StreamingAssets\QCAR\ThesisDatabase.xml" />
      <None Include="Assets\StreamingAssets\QCAR\Test.xml" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\CameraMotionBlurDX11.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\SeparableBlurPlus.shader" />

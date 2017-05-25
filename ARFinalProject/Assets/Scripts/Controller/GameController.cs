@@ -13,6 +13,7 @@ public class GameController : MonoBehaviour {
 
 	public GameObject _helicopterPrefab;
 	public GameObject _planePrefab;
+	public GameObject _lamborPrefab;
 	public GameObject _gameObjectInBoard;
 	public GameObject _canvas;
     public GameObject _targets;
@@ -63,7 +64,7 @@ public class GameController : MonoBehaviour {
 	public GameObject[] _cardChoiceTarget;
 	public GameObject _fullBoard;
     public bool _isWaiting = F; //Chờ xong effect
-	private bool AR_MODE_ON = true;
+	public bool AR_MODE_ON = T;
 	private bool DEBUG_AR = F;
 
 
@@ -77,6 +78,12 @@ public class GameController : MonoBehaviour {
 	private GameObject _helicopter;
 	private GameObject _plane;
 	private GameObject _arrowTarget;
+	private GameObject _lambor;
+
+	private int _destAirport;
+	private int _costAirport;
+	private int _destCoachStation;
+	private int _costCoachStation;
 
 	public GameObject _arrowTargetPrefab;
 
@@ -108,13 +115,15 @@ public class GameController : MonoBehaviour {
 		gameControllerInstance.InitEventTypeAtPosition();
 
 		StartCoroutine (WaitForInitPlayers (_totalEffectTime));
-		if (!_isWaiting) StartCoroutine (WaitForFirstThrowDice (_startGameTime));
+		StartCoroutine (WaitForInitAirport (_totalEffectTime));
+		StartCoroutine (WaitForInitCoachStation (0f));
+
+		if (!_isWaiting)
+			StartCoroutine (WaitForFirstThrowDice (_startGameTime));
 
 		if (!AR_MODE_ON) {
 			_ARCamera.SetActive (false);
 			_mainCamera = _normalCamera;
-			//for (int i = 0; i < _cardChoiceTarget.Length; i++)
-			//	_cardChoiceTarget [i].SetActive (false);
 		} else {
 			_mainCamera = _ARCamera.transform.Find("Camera").gameObject;
 			_normalCamera.SetActive (false);
@@ -220,11 +229,13 @@ public class GameController : MonoBehaviour {
         }
        
     }
+
     public void HandleAfterFinishAuction()
     {
         SetPlayerTurnIdx();
         _shouldThrowDice = true;
     }
+
     public void SetPlayerTurnIdx()
     {
         int delta = 1;
@@ -241,6 +252,37 @@ public class GameController : MonoBehaviour {
 	IEnumerator WaitForInitPlayers(float time) {
 		yield return new WaitForSeconds(time);
 		PlayerController.GetInstance ().InitPlayers ();
+	}
+
+	IEnumerator WaitForInitAirport(float time) {
+		yield return new WaitForSeconds(time);
+		SetDestAirport ();
+	} 
+
+	IEnumerator WaitForInitCoachStation(float time) {
+		yield return new WaitForSeconds(time);
+		SetDestCoachStation ();
+	} 
+
+	void SetDestCoachStation() {
+		_destCoachStation = RandomCity (_destCoachStation);
+		_costCoachStation = Random.Range (1, 4) * 1000;
+		_places [18].transform.Find ("Name").GetComponent<TextMesh> ().text = "Đi công tác \n" + GetRealNamePlace(_destCoachStation) + "\n$" + _costCoachStation.ToString ();
+	}
+
+	void SetDestAirport() {
+		_destAirport = RandomCity (_destCoachStation);
+		_costAirport = Random.Range (1, 4) * 1000;
+		_places [27].transform.Find ("Name").GetComponent<TextMesh> ().text = "Bay đến\n" + GetRealNamePlace(_destAirport) + "\n$" + _costAirport.ToString ();
+	}
+
+	int RandomCity(int exceptInt) {
+		while (true) {
+			int r = Random.Range (0, 36);
+			if (GetTypeOfEvent (_places [r].name) == _valBuildHouse && r != exceptInt) {
+				return r;
+			}
+		}
 	}
 
 	public static int GetPlacesNum() {
@@ -302,7 +344,8 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void DestroyArrowTarget() {
-		Destroy (_arrowTarget);
+		if (_arrowTarget != null)
+			Destroy (_arrowTarget);
 	}
 
 	public void AddCellAnimation(int position) {
@@ -357,14 +400,27 @@ public class GameController : MonoBehaviour {
             }
             else if (curPlayer._inPrison > 1)
             {
-                curPlayer._inPrison -= 1;
-                gameControllerInstance.SetPlayerTurnIdx();
-                gameControllerInstance._shouldThrowDice = T;
+				Debug.Log ("Dang o trong tu: " + curPlayer._inPrison.ToString ());
+				curPlayer._inPrison -= 1;
+				gameControllerInstance.StartCoroutineNextInPrison (2.0f);
                 return;
             }
         }
 		gameControllerInstance.InitArrowTarget (curPlayer.GetPositionWithDelta (sumDiceValue));
 		PlayerController.GetInstance ().MovePlayer (sumDiceValue);
+	}
+
+	public void StartCoroutineNextInPrison(float time) {
+		showDialog ("Bạn không thể di chuyển vì chưa ra tù");
+		StartCoroutineHideDialog ();
+		StartCoroutine (NextInPrison (time));
+	}
+
+	public IEnumerator NextInPrison(float time) {
+		yield return new WaitForSeconds (time);
+		gameControllerInstance.SetPlayerTurnIdx();
+		PlayerController.GetInstance ().ChangeMovePlayerValue (false);
+		gameControllerInstance._shouldThrowDice = T;
 	}
 
     public void GetMoneyToOutPrison()
@@ -417,12 +473,21 @@ public class GameController : MonoBehaviour {
 		case _valAirport:
 			gameControllerInstance.RandomFly ();
 			return;
+		case _valCoachStation:
+			RandomTravel ();
+			return;
         case _valAuction:
                 gameControllerInstance.DoAuction(PlayerController.GetInstance()._playerTurnIdx, position);
                 return;
         case _valPrison:
                 gameControllerInstance.VisitPrison();
                 return;
+		case _valParkingFee:
+				ParkingFee (position);
+				return;
+		case _valTax:
+				Tax (position);
+				return;
         }
 		int delta = 1;
 		if (_isSameDice) {
@@ -430,6 +495,34 @@ public class GameController : MonoBehaviour {
 		}
 		PlayerController.GetInstance ().SetPlayerTurnIdx (delta);
 		gameControllerInstance._shouldThrowDice = true;
+	}
+
+	public void Tax(int pos) {
+		if (PlayerController.GetInstance ().GetMoneyCurrentPlayer () >= 5000) {
+			PlayerController.GetInstance ().IncreaseMoney (-5000);
+			showDialog ("Bạn đã đóng thuế hết $5000");
+			StartCoroutineHideDialog ();
+			SetPlayerTurnIdx ();
+			_shouldThrowDice = true;
+		} else {
+			showDialog ("Bạn không có đủ $5000 để đóng thuế");
+			StartCoroutineHideDialog ();
+			processSaleHouse (5000);
+		}
+	}
+
+	public void ParkingFee(int pos) {
+		if (PlayerController.GetInstance ().GetMoneyCurrentPlayer () >= 2000) {
+			PlayerController.GetInstance ().IncreaseMoney (-2000);
+			showDialog ("Bạn đã trả phí đổ xe $2000");
+			StartCoroutineHideDialog ();
+			SetPlayerTurnIdx ();
+			_shouldThrowDice = true;
+		} else {
+			showDialog ("Bạn không có đủ $2000 để đổ xe");
+			StartCoroutineHideDialog ();
+			processSaleHouse (2000);
+		}
 	}
 
     public void VisitPrison()
@@ -440,7 +533,8 @@ public class GameController : MonoBehaviour {
             {
                 if (PlayerController.GetInstance().GetMoneyCurrentPlayer() > 5000)
                 {
-                    showDialog("Bạn tiêu 5000 vì thăm tù");
+					Debug.Log ("Tham tu ");
+                    showDialog("Bạn tiêu $5000 vì thăm tù");
                     PlayerController.GetInstance().IncreaseMoney(-5000);
                     SetPlayerTurnIdx();
                     _shouldThrowDice = true;
@@ -454,7 +548,7 @@ public class GameController : MonoBehaviour {
                     processSaleHouse(5000);
                     return;
                 }
-                break;
+                return;
             }
         }
         SetPlayerTurnIdx();
@@ -556,7 +650,6 @@ public class GameController : MonoBehaviour {
                     //-----------------------------------------------
                     //Sale house process 2
                     //showDialog();
-                    Debug.Log("AAAAAAAAAAAAAAAAAAAA");
                     showDialog("Bạn không đủ tiền mặt, bạn cần " + (payMoney - _currentPlayerMoney).ToString() + "$ để trả tiền ghé thăm tại " + _places[_currentPosition].GetComponent<CellUtil>().getPlaceName() + ". Bạn có muốn bán nhà để chi trả không?");
                     ConditionTrackableEventHandler._type = 2;
                     _isWaitCardChoiceCityProcess = true;
@@ -723,12 +816,12 @@ public class GameController : MonoBehaviour {
             int cost = Auction.GetInstance().GetCostToAuction(playeId, position);
             if (cost > 0 && cost <= PlayerController.GetInstance().GetMoneyCurrentPlayer())
             {
-                showDialog("Bạn có muốn đấu giá không?");
+				showDialog("Bạn có muốn đấu giá " + GetRealNamePlace(position) + " $" + cost.ToString() + " không?");
                 _isWaitCardChoice = true;
                 return;
             } else
             {
-                showDialog("Bạn không đủ tiền để đấu giá @@");
+				showDialog("Bạn không đủ $" +  cost.ToString() + " để đấu giá " + GetRealNamePlace(position));
                 Auction.GetInstance().CheckOwner(position);
                 _isWaitCardChoice = false;
             }  
@@ -751,12 +844,42 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	string GetRealNamePlace(int pos) {
+		return _places [pos].GetComponent<CellUtil> ().getPlaceName ();
+	}
+
 	public void RandomFly() {
-		int randomPos = GetRandomIntExcecpt (27);
+		if (PlayerController.GetInstance ().GetMoneyCurrentPlayer () >= _costAirport) {
+			PlayerController.GetInstance ().IncreaseMoney (-_costAirport);
+			showDialog ("Bạn bay đến " + GetRealNamePlace (_destAirport) + "  với phí\n" + _costAirport.ToString ());
+			StartCoroutineHideDialog ();
+		} else {
+			showDialogInSeconds ("Bạn không đủ tiền để  bay đến " + GetRealNamePlace (_destAirport) + "  với phí\n" + _costAirport.ToString (), 2f);
+			return;
+		}
+
 		_plane = Instantiate (_planePrefab, _gameObjectInBoard.transform);
 		_plane.transform.localPosition = _places [27].transform.localPosition + new Vector3 (0f, 0.2f, 0f);
 		PlayerController.GetInstance ().SetActivePlayer (false);
-		StartCoroutine(FlyPlayer(_plane, PlayerController.GetInstance ()._playerTurnIdx, 27, randomPos));
+		StartCoroutine(FlyPlayer(_plane, PlayerController.GetInstance ()._playerTurnIdx, 27, _destAirport));
+		SetDestAirport ();
+	}
+
+	public void RandomTravel() {
+		if (PlayerController.GetInstance ().GetMoneyCurrentPlayer () >= _costCoachStation) {
+			PlayerController.GetInstance ().IncreaseMoney (-_costCoachStation);
+			showDialog ("Bạn công tác " + GetRealNamePlace (_destCoachStation) + "  với phí\n" + _costCoachStation.ToString ());
+			StartCoroutineHideDialog ();
+		} else {
+			showDialogInSeconds ("Bạn không đủ tiền để  đi công tác " + GetRealNamePlace (_destCoachStation) + "  với phí\n" + _costCoachStation.ToString (), 2f);
+			return;
+		}
+
+		_lambor = Instantiate (_lamborPrefab, _gameObjectInBoard.transform);
+		_lambor.transform.localPosition = PlayerController.GetInstance ().GetLocalPosition (PlayerController.GetInstance()._playerTurnIdx, 18) + new Vector3 (0f, 0.2f, 0f);
+		PlayerController.GetInstance ().SetActivePlayer (false);
+		StartCoroutine(Travel(_lambor, PlayerController.GetInstance ()._playerTurnIdx, 18, _destCoachStation));
+		SetDestCoachStation ();
 	}
 
 	public void PassStart(){
@@ -770,9 +893,11 @@ public class GameController : MonoBehaviour {
 	public void GoPrison(int curPosition) {
 		if (PlayerController.GetInstance ().GetCurrentPlayerPrisonLicense () > 0) {
 			PlayerController.GetInstance ().ChangeCurrentPlayerPrisonLicense (-1);
-			_shouldThrowDice = true;
+			showDialogInSeconds ("Bạn không phải vào tù vì có thẻ miễn vào tù", 2f);
 			return;
 		}
+		showDialog ("Bạn bị nhốt vào tù");
+		StartCoroutineHideDialog ();
 
 		_helicopter = Instantiate (_helicopterPrefab, _gameObjectInBoard.transform);
 		_helicopter.transform.localPosition = _places [curPosition].transform.localPosition + new Vector3 (0f, 0.2f, 0f);
@@ -789,8 +914,7 @@ public class GameController : MonoBehaviour {
 
 		if (AR_MODE_ON) {
 			_fullBoard.SetActive (false);
-			//for (int i = 0; i < _cardChoiceTarget.Length; i++)
-			//	_cardChoiceTarget [i].SetActive (true);
+
 		} else
 			StartCoroutine (Wait(2f));
 	}
@@ -817,8 +941,6 @@ public class GameController : MonoBehaviour {
         if (AR_MODE_ON)
         {
             _fullBoard.SetActive(true);
-            for (int i = 0; i < _cardChoiceTarget.Length; i++)
-                _cardChoiceTarget[i].SetActive(false);
         }
 
         _cardChoice = -1;
@@ -842,7 +964,7 @@ public class GameController : MonoBehaviour {
                     delta = 0;
                     break;
                 case 2:
-                    showDialog("Chúc mừng bạn được nhận số tiền: " + randomMoney.ToString());
+                    showDialog("Chúc mừng bạn được nhận số tiền: $" + randomMoney.ToString());
                     PlayerController.GetInstance().GetCurrentPlayer()._money += randomMoney;
                     break;
             }
@@ -863,7 +985,7 @@ public class GameController : MonoBehaviour {
                     PlayerController.GetInstance().GetCurrentPlayer()._turnExtra -= 1;
                     break;
                 case 2:
-                    showDialog("Bạn tặng quà sinh nhật cho bạn với số tiền là: " + randomMoney.ToString());
+                    showDialog("Bạn tặng quà sinh nhật cho bạn với số tiền là: $" + randomMoney.ToString());
                     PlayerController.GetInstance().GetCurrentPlayer()._money -= randomMoney;
                     break;
             }
@@ -891,11 +1013,14 @@ public class GameController : MonoBehaviour {
 
         yield return new WaitForSeconds(0.2f);
         Sprite originSpr = img.GetComponent<Image>().sprite;
+		Vector3 originPos = img.transform.localPosition;
         img.GetComponent<Image>().sprite = replace;
+		img.GetComponent<UIImageScript> ().SetMove ();
         yield return new WaitForSeconds(4f);
 
-
+		img.transform.localScale = new Vector3 (1f, 1f, 1f);
         img.GetComponent<Image>().sprite = originSpr;
+		img.transform.localPosition = originPos;
         _canvas.transform.Find("LuckyAndUnlucky").gameObject.SetActive(false);
         GetUnluckyAndUnluckyResult(result);
     }
@@ -937,8 +1062,111 @@ public class GameController : MonoBehaviour {
 		return _valBuildHouse;
 	}
 
+	IEnumerator Travel(GameObject model, int playerIdx, int startPos, int endPos) {
+		Debug.Log (startPos.ToString () + " ... " + endPos.ToString ());
+
+		if (endPos > 18 && endPos <= 35) {
+			int tmpEnd1 = endPos;
+			if (endPos > 27)
+				tmpEnd1 = 27;
+			
+			model.transform.localEulerAngles = new Vector3 (0f, 90f, 0f);
+			Vector3 startLoc = PlayerController.GetInstance ().GetLocalPosition (playerIdx, startPos);
+			Vector3 endLoc = PlayerController.GetInstance ().GetLocalPosition (playerIdx, tmpEnd1);
+			float dis = (endLoc.z - startLoc.z) * Time.deltaTime;
+
+			float elapse_time = 0;
+			while (elapse_time <= 1.0f)
+			{
+				model.transform.localPosition += new Vector3(0f, 0f, dis);
+				elapse_time += Time.deltaTime;
+				if (elapse_time > 1.0f)
+					model.transform.localPosition = endLoc;
+				yield return null;
+			}
+				
+			model.transform.localPosition = endLoc;
+
+			if (endPos > 27) {
+				startLoc = endLoc;
+				endLoc = PlayerController.GetInstance ().GetLocalPosition (playerIdx, endPos);
+				model.transform.localEulerAngles = new Vector3 (0f, 180f, 0f);
+				dis = (endLoc.x - startLoc.x) * Time.deltaTime;
+				elapse_time = 0;
+				while (elapse_time <= 1.0f)
+				{
+					model.transform.localPosition += new Vector3(dis, 0f, 0f);
+					elapse_time += Time.deltaTime;
+					if (elapse_time > 1.0f)
+						model.transform.localPosition = endLoc;
+					yield return null;
+				}
+				model.transform.localPosition = endLoc;
+			}
+		} else {
+			int tmpEnd1 = endPos;
+			if (endPos < 9)
+				tmpEnd1 = 9;
+
+			model.transform.localEulerAngles = new Vector3 (0f, 180f, 0f);
+			Vector3 startLoc = PlayerController.GetInstance ().GetLocalPosition (playerIdx, startPos);
+			Vector3 endLoc = PlayerController.GetInstance ().GetLocalPosition (playerIdx, tmpEnd1);
+			float dis = (endLoc.x - startLoc.x) * Time.deltaTime;
+
+			float elapse_time = 0;
+			int j = 0;
+			while (elapse_time <= 1.0f)
+			{
+				model.transform.localPosition += new Vector3(dis, 0f, 0f);
+				Debug.Log ("j " + j.ToString () + " " + model.transform.localPosition.ToString ());
+				elapse_time += Time.deltaTime;
+				if (elapse_time > 1.0f)
+					model.transform.localPosition = endLoc;
+				yield return null;
+			}
+			model.transform.localPosition = endLoc;
+
+			if (endPos < 9) {
+				startLoc = endLoc;
+				endLoc = PlayerController.GetInstance ().GetLocalPosition (playerIdx, endPos);
+				model.transform.localEulerAngles = new Vector3 (0f, 90f, 0f);
+				dis = (endLoc.z - startLoc.z) * Time.deltaTime;
+				elapse_time = 0;
+				while (elapse_time <= 1.0f)
+				{
+					model.transform.localPosition += new Vector3(0f, 0f, dis);
+					elapse_time += Time.deltaTime;
+					if (elapse_time > 1.0f)
+						model.transform.localPosition = endLoc;
+					yield return null;
+				}
+				model.transform.localPosition = endLoc;
+			}
+
+		}
+		Destroy (model, 0.5f);
+		//Destroy(model, 3.0f);
+		PlayerController.GetInstance().SetLocalPosition(playerIdx, endPos);
+		PlayerController.GetInstance().SetPosition(playerIdx, endPos);
+		float faceAngle = 0f;
+		if (endPos >= 9 && endPos < 18)
+			faceAngle = 90f;
+		else if (endPos >= 18 && endPos < 27)
+			faceAngle = 180f;
+		else if (endPos >= 27 && endPos < 36)
+			faceAngle = 270f;
+		PlayerController.GetInstance().GetCurrentPlayer()._player.transform.localEulerAngles = new Vector3(0f, faceAngle, 0f);
+		PlayerController.GetInstance().SetActivePlayer(playerIdx, true);
+
+		yield return new WaitForSeconds(1f);
+
+		PlayerController.GetInstance().ChangeMovePlayerValue(false);
+		HandleEventAtPosition(endPos, 0);
+	}
+
     IEnumerator FlyPlayer(GameObject model, int playerIdx, int startPos, int endPos)
     {
+		gameControllerInstance.InitArrowTarget (endPos);
         Vector3 target = _places[endPos].transform.localPosition;
         if (startPos != endPos)
         {
@@ -979,6 +1207,7 @@ public class GameController : MonoBehaviour {
             yield return new WaitForSeconds(1.6f);
 
         Destroy(model, 1.0f);
+		gameControllerInstance.DestroyArrowTarget ();
         PlayerController.GetInstance().SetLocalPosition(playerIdx, endPos);
         PlayerController.GetInstance().SetPosition(playerIdx, endPos);
         float faceAngle = 0f;

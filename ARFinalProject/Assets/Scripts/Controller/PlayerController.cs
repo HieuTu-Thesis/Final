@@ -152,6 +152,10 @@ public class PlayerController : MonoBehaviour {
 		_isMovePlayer = value;
 		GetComponent<DiceEventHandler>().SetIsMovePlayer(_isMovePlayer);
 	}
+
+	public Vector3 GetLocalPosition(int idxPlayer, int position) {
+		return GetLocalPositionPlace(position) + GetDeltaPosition(_playerTurnIdx, position);
+	}
 		
 	// Move player by jumping
 	// parameters of formula
@@ -186,7 +190,7 @@ public class PlayerController : MonoBehaviour {
 
 			if (nextPosition == 0 || nextPosition == 9 || nextPosition == 18 || nextPosition == 27) {
 				float rotateAngle = direction * 90f;
-				_players [_playerTurnIdx]._player.transform.Rotate (new Vector3 (0f, rotateAngle, 0f));// = new Vector3 (0f, rotateAngle + _players [_playerTurnIdx]._player.transform.localEulerAngles.y, 0f);
+				_players [_playerTurnIdx]._player.transform.Rotate (new Vector3 (0f, rotateAngle, 0f));
 			}
 
 			Vector3 targetLocalPosition = GetLocalPositionPlace(GetPositionOfPlayerWithDelta(_playerTurnIdx, direction)) + GetDeltaPosition(_playerTurnIdx, nextPosition);
