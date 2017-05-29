@@ -7,7 +7,7 @@ public class Effect3 : MonoBehaviour {
     public float _degrees, _changeDegrees;
     private int _startIdx, _endIdx;
     private int[] _count;
-	public static bool EFFECT = false;
+	public static bool EFFECT = true;
 	// Use this for initialization
 	void Start () {
         _startIdx = 0;

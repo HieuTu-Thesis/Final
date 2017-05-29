@@ -161,6 +161,7 @@
     <Compile Include="Assets\Scripts\Controller\CellUtil.cs" />
     <Compile Include="Assets\Scripts\Controller\DiceEventHandler.cs" />
     <Compile Include="Assets\Scripts\Controller\GameController.cs" />
+    <Compile Include="Assets\Scripts\Controller\LamborController.cs" />
     <Compile Include="Assets\Scripts\Controller\Player.cs" />
     <Compile Include="Assets\Scripts\Controller\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Controller\Ultility.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="Assets\Scripts\Effects\Effect4.cs" />
     <Compile Include="Assets\Scripts\Effects\LoadScene.cs" />
     <Compile Include="Assets\Scripts\Effects\MovingVehicles.cs" />
+    <Compile Include="Assets\Scripts\Effects\UIImageScript.cs" />
     <Compile Include="Assets\Scripts\Games\JackPot\JackPot.cs" />
     <Compile Include="Assets\Scripts\Games\JackPot\PotRotate.cs" />
     <Compile Include="Assets\Scripts\Games\Roulette\Light.cs" />

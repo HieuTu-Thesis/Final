@@ -10,7 +10,7 @@ public class Effect1 : MonoBehaviour {
     public int _type;
     public bool _isShow, _isChanged;
     public Material _material;
-	public static bool EFFECT = false;
+	public static bool EFFECT = true;
     // Use this for initialization
     void Start() {
         Calculate();

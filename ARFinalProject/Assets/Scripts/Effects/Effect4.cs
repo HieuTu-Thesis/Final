@@ -7,7 +7,7 @@ public class Effect4 : MonoBehaviour {
     public float _delayTime;
     public GameObject _effect;
     public GameObject[] _show;
-	public static bool EFFECT = false;
+	public static bool EFFECT = true;
 	// Use this for initialization
 	void Start () {
         _isShow = false;
@@ -29,6 +29,9 @@ public class Effect4 : MonoBehaviour {
         
         _effect.SetActive(true);
         _show[0].SetActive(true);
+        gameObject.GetComponents<AudioSource>()[0].Play();
+        gameObject.GetComponents<AudioSource>()[2].Play();
+        gameObject.GetComponents<AudioSource>()[1].Stop();
         StartCoroutine(EndEffect(25F));
     }
     IEnumerator StartGame(float time)
@@ -39,7 +42,9 @@ public class Effect4 : MonoBehaviour {
     IEnumerator EndEffect(float time)
     {
         yield return StartCoroutine(Wait(time));
-        _show[0].transform.FindChild("ETF_Life Stream").gameObject.SetActive(false);
+        Destroy(_show[0].transform.FindChild("ETF_Life Stream").gameObject);
+        gameObject.GetComponents<AudioSource>()[3].Play();
+        gameObject.GetComponents<AudioSource>()[2].Stop();
         StartCoroutine(StartGame(5F));
     }
 

@@ -35,14 +35,14 @@ public class MyTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
                 }
             }
 
-			if (!GameController.GetInstance ()._isWaitCardChoice)
+			if (!GameController.GetInstance ()._isWaitCardChoiceOpport)
 				return;
 			
 			Debug.Log (mTrackableBehaviour.TrackableName + " found");
 			for (int i = 0; i < _cardChoiceNames.Length; i++) {
 				if (mTrackableBehaviour.TrackableName.CompareTo (_cardChoiceNames [i]) == 0) {
-					if (GameController.GetInstance ()._isWaitCardChoice)
-						GameController.GetInstance ()._cardChoice = i;
+					if (GameController.GetInstance()._isWaitCardChoiceOpport)
+						GameController.GetInstance()._cardChoiceOpport = i;
 				}
 			}
 		}

@@ -185,6 +185,7 @@ public class PlayerController : MonoBehaviour {
 		// Move player with _stepNum steps
 		for (int i = 0; i < _stepNum; i++)
 		{
+            gameObject.GetComponents<AudioSource>()[6].Play();
 			int idxPositionInBoard = GetCurrentPlayerPosition();
 			int nextPosition = GetPositionOfPlayerWithDelta (_playerTurnIdx, direction);
 
@@ -316,6 +317,7 @@ public class PlayerController : MonoBehaviour {
     }
     public int AddMoneyPlayer(int playerIdx, int money)
     {
+        gameObject.GetComponents<AudioSource>()[7].Play();
         return _players[playerIdx]._money += money;
     }
 		

@@ -262,7 +262,7 @@ public class CellUtil : MonoBehaviour
             _ownerIdx = ownerIdx;
             Debug.Log(_ownerIdx);
             //Gắn cờ _flags cho vùng đất mới mua
-            _currentFlag = Instantiate(_flags[_ownerIdx], _tempateModels[4].transform.position, _tempateModels[4].transform.rotation, this.gameObject.transform);
+            _currentFlag = Instantiate(_flags[_ownerIdx], _tempateModels[4].transform.position, _tempateModels[4].transform.rotation, _tempateModels[4].transform.parent.transform);
         }
         else
         {
@@ -275,7 +275,7 @@ public class CellUtil : MonoBehaviour
                     //_ownerIdx = ownerIdx;
                     //Gỡ cờ
                     Destroy(_currentFlag);
-                    _currentHouse = Instantiate(_houseModels[4 * ownerIdx + _currentHouseLevel], _tempateModels[_currentHouseLevel].transform.position, _tempateModels[_currentHouseLevel].transform.rotation, this.gameObject.transform);
+                    _currentHouse = Instantiate(_houseModels[4 * ownerIdx + _currentHouseLevel], _tempateModels[_currentHouseLevel].transform.position, _tempateModels[_currentHouseLevel].transform.rotation, _tempateModels[_currentHouseLevel].transform.parent.transform);
                     //if (_effect == null)
                     //    _effect = Instantiate(_upgradeEffect, _tempateModels[1].transform.position, _tempateModels[1].transform.rotation, this.gameObject.transform);
                     //else _effect.GetComponent<ParticleSystem>().Play(true);
@@ -288,20 +288,30 @@ public class CellUtil : MonoBehaviour
                     //Gỡ bỏ nhà cũ
                     Destroy(_currentHouse);
                     //Xây nhà mới
-                    _currentHouse = Instantiate(_houseModels[4 * ownerIdx + _currentHouseLevel], _tempateModels[_currentHouseLevel].transform.position, _tempateModels[_currentHouseLevel].transform.rotation, this.gameObject.transform);
+                    _currentHouse = Instantiate(_houseModels[4 * ownerIdx + _currentHouseLevel], _tempateModels[_currentHouseLevel].transform.position, _tempateModels[_currentHouseLevel].transform.rotation, _tempateModels[_currentHouseLevel].transform.parent.transform);
                     //_effect = Instantiate(_upgradeEffect, _tempateModels[1].transform.position, _tempateModels[1].transform.rotation, this.gameObject.transform);
                     //_upgradeEffect.GetComponent<ParticleSystem>().Play(true);
                     _currentHouseLevel++;
                 }
-                if (_effect != null) Destroy(_effect);
-                _effect = Instantiate(_upgradeEffect, _tempateModels[3].transform.position, _tempateModels[3].transform.rotation, this.gameObject.transform);
+                //if (_effect != null) Destroy(_effect);
+                //_effect = Instantiate(_upgradeEffect, _tempateModels[3].transform.position, _tempateModels[3].transform.rotation, this.gameObject.transform);
+                _tempateModels[5].SetActive(true);
+                _tempateModels[5].GetComponent<ParticleSystem>().Stop();
+                _tempateModels[5].GetComponent<ParticleSystem>().Play();
                 return 1;
             }
             else return 0;
         }
+        _tempateModels[5].SetActive(true);
+        _tempateModels[5].GetComponent<ParticleSystem>().Stop();
+        _tempateModels[5].GetComponent<ParticleSystem>().Play();
 
-        if (_effect != null) Destroy(_effect);
-        _effect = Instantiate(_upgradeEffect, _tempateModels[3].transform.position, _tempateModels[3].transform.rotation, this.gameObject.transform);
+        //if (_effect != null) Destroy(_effect);
+        //{
+        //    _effect = Instantiate(_upgradeEffect, _tempateModels[5].transform.position, _tempateModels[5].transform.rotation, this.gameObject.transform);
+        //    //Debug.Log(_effect.GetComponent<ParticleSystem>().main.loop);
+        //    _effect.GetComponent<ParticleSystem>().Simulate(5F, true, true);
+        //}      
         return 1;
     }
     public void destroyHouse()
@@ -310,7 +320,9 @@ public class CellUtil : MonoBehaviour
         if (_currentHouse != null) Destroy(_currentHouse);
         if (_effect != null) Destroy(_effect);
         if (_dEffect != null) Destroy(_dEffect);
-        _dEffect = Instantiate(_destroyEffect, _tempateModels[3].transform.position, _tempateModels[3].transform.rotation, this.gameObject.transform);
+        _tempateModels[5].SetActive(false);
+        gameObject.transform.parent.GetComponents<AudioSource>()[0].Play();
+        _dEffect = Instantiate(_destroyEffect, _tempateModels[5].transform.position, _tempateModels[5].transform.rotation, this.gameObject.transform);
         //else Instantiate(_destroyEffect, _tempateModels[3].transform.position, _tempateModels[3].transform.rotation, this.gameObject.transform);
         _currentHouseLevel = 0;
         _ownerIdx = -1;

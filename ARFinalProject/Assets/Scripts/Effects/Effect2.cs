@@ -5,24 +5,26 @@ using UnityEngine;
 public class Effect2 : MonoBehaviour
 {
     public GameObject[] _gameObjects;
-
+    public GameObject _changeEffect;
+    private GameObject _changeEffectInstance;
+    private GameObject _gameInstance;
     public float R, G, B;
     public int _endY;
     public float _delayTime;
     private int _endIdx, _startIdx, y, _originY;
     private int _idx;
-
     public float _degrees, _changeDegrees;
     private int[] _count;
     public bool _rotateEffect;
     public bool _initEffect;
     public bool _isStartRotate;
 
-	public static bool EFFECT = false;
+
+    public static bool EFFECT = true;
     // Use this for initialization
     void Start()
     {
-        
+
         _isStartRotate = false;
         _endIdx = 1;
         _startIdx = 0;
@@ -38,8 +40,10 @@ public class Effect2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (!EFFECT)
-			return;
+        if (!EFFECT)
+            return;
+
+
         if (_initEffect == true && _startIdx != _endIdx)
         {
             for (int i = _startIdx; i < _endIdx; i++)
@@ -111,8 +115,10 @@ public class Effect2 : MonoBehaviour
             {
                 _gameObjects[i].GetComponent<CellUtil>().playHighLightColor(20F);
                 _gameObjects[i].transform.FindChild("ETF_Landmine").GetComponent<ParticleSystem>().Play(true);
+                
             }
             gameObject.GetComponent<Effect4>()._isShow = true;
+            gameObject.GetComponents<AudioSource>()[1].Play();
         }
     }
 
@@ -136,5 +142,44 @@ public class Effect2 : MonoBehaviour
     IEnumerator Wait(float seconds)
     {
         yield return new WaitForSeconds(seconds);
+    }
+    public void ChangeGame(GameObject gameObj, int type)
+    {
+        if (type == 1)
+        {
+            //Disable game
+            GameObject city = gameObject.transform.Find("InnerBackground").gameObject;
+            city.SetActive(false);
+            //Change effect
+            //if (_changeEffectInstance != null) Destroy(_changeEffectInstance);
+            //    _changeEffectInstance = Instantiate(_changeEffect, new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0), city.transform);
+            gameObject.transform.parent.Find("ETF_Big Bang").gameObject.GetComponent<ParticleSystem>().Stop();
+            gameObject.transform.parent.Find("ETF_Big Bang").gameObject.GetComponent<ParticleSystem>().Play();
+            if (_gameInstance == null)
+            {
+                _gameInstance = Instantiate(gameObj, gameObj.transform.position, gameObj.transform.localRotation, city.transform.parent);
+                _gameInstance.SetActive(true);
+            }
+               
+            else
+            {
+                Destroy(_gameInstance);
+                _gameInstance = Instantiate(gameObj, gameObj.transform.position, gameObj.transform.localRotation, city.transform.parent);
+                _gameInstance.SetActive(true);
+            }
+            //_gameInstance.SetActive(true);
+        }
+        else if (type == 2)
+        {
+            if (_gameInstance != null)
+            {
+                gameObject.transform.parent.Find("ETF_Big Bang").gameObject.GetComponent<ParticleSystem>().Stop();
+                gameObject.transform.parent.Find("ETF_Big Bang").gameObject.GetComponent<ParticleSystem>().Play();
+                Destroy(_gameInstance);
+                GameObject city = gameObject.transform.Find("InnerBackground").gameObject;
+                gameObject.transform.parent.Find("ETF_Big Bang").gameObject.SetActive(true);
+                city.SetActive(true);
+            }
+        }
     }
 }

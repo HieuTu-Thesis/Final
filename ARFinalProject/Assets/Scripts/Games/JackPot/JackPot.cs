@@ -15,6 +15,18 @@ public class JackPot : MonoBehaviour, IVirtualButtonEventHandler {
 	
 	// Update is called once per frame
 	void Update () {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                _jackPots[i].GetComponent<PotRotate>()._isStop = false;
+                _jackPots[i].GetComponent<PotRotate>()._isStart = true;
+                _jackPots[i].GetComponent<PotRotate>()._choice = Random.Range(0, 3);
+                //Debug.Log(_jackPots[i].GetComponent<PotRotate>()._choice);
+            }
+            _k = 0;
+            StartCoroutine(StopPot(8F));
+        }
     }
     public void OnButtonPressed (VirtualButtonAbstractBehaviour vb)
     {

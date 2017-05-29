@@ -117,7 +117,7 @@ public class Auction
             ap._curMoney += ap._rate;
             GameController.GetInstance()._isWaitCardChoice = false;
             PlayerController.GetInstance().IncreaseMoney(ap._auctedMoney[playerId] - ap._curMoney);
-            GameController.GetInstance().showDialog("Bạn đấu giá lên " + ap._curMoney.ToString());
+            GameController.GetInstance().showDialog("Bạn đấu giá lên " + ap._curMoney.ToString() + "$");
             GameController.GetInstance().StartCoroutineHideDialog();
             ap._auctedMoney[playerId] = ap._curMoney;
         }

@@ -19,22 +19,22 @@ public class ConditionTrackableEventHandler : MonoBehaviour, ITrackableEventHand
     }
 
 
-	IEnumerator Wait(float time) {
-		yield return new WaitForSeconds(time);
-		GameController.GetInstance().hideDialog();
+	//IEnumerator Wait(float time) {
+	//	yield return new WaitForSeconds(time);
+	//	GameController.GetInstance().hideDialog();
 
-		if (_type == 0) GameController.GetInstance().buildHouseProcess();
-		else if (_type == 1) GameController.GetInstance().saleHouseProcess1();
-		else if (_type == 2) GameController.GetInstance().saleHouseProcess2();
-	}
+	//	if (_type == 0) GameController.GetInstance().buildHouseProcess();
+	//	else if (_type == 1) GameController.GetInstance().saleHouseProcess1();
+	//	else if (_type == 2) GameController.GetInstance().saleHouseProcess2();
+	//}
 
-	void Update() {
-		/*
-		if (GameController.GetInstance ()._isWaitCardChoiceCityProcess && !GameController.GetInstance().AR_MODE_ON) {
-			GameController.GetInstance()._isWaitCardChoiceCityProcess = false;
-			StartCoroutine (Wait (2.0f));
-		}*/
-	}
+	//void Update() {
+	//	/*
+	//	if (GameController.GetInstance ()._isWaitCardChoiceCityProcess && !GameController.GetInstance().AR_MODE_ON) {
+	//		GameController.GetInstance()._isWaitCardChoiceCityProcess = false;
+	//		StartCoroutine (Wait (2.0f));
+	//	}*/
+	//}
 
     public void OnTrackableStateChanged(TrackableBehaviour.Status previousStatus, TrackableBehaviour.Status newStatus)
     {
@@ -66,8 +66,7 @@ public class ConditionTrackableEventHandler : MonoBehaviour, ITrackableEventHand
             {
                 GameController.GetInstance().hideDialog();
                 if (_type == 0) GameController.GetInstance().buildHouseProcess();
-                else if (_type == 1) GameController.GetInstance().saleHouseProcess1();
-                else if (_type == 2) GameController.GetInstance().saleHouseProcess2();
+                else if (_type == 1) GameController.GetInstance().saleHouseProcess();
                 
             }else if (mTrackableBehaviour.TrackableName.Equals("No"))
             {
